@@ -11,7 +11,10 @@ public class ProjectEntityRepository implements ProjectRepository {
 	@Override
 	public Project findById(ProjectId projectId) {
 		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId.getId()).orElse(null);
-        return projectEntity.toDomain();
+		if (projectEntity != null) {
+	        return projectEntity.toDomain();
+		}
+		return null;
 	}
 
 	@Override

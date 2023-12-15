@@ -19,6 +19,10 @@ public class ProjectManagementController {
 	// curl -X GET http://localhost:8090/pm/project/{id}
 	@GetMapping("/project/{id}")
 	public String getProjectInformation(@PathVariable int id) {	
-	    	return projectManagementService.read(id).toString();
+		Project p = projectManagementService.read(id);
+		if (p != null) {
+			return p.toString();
+		}
+		return "No project found with ID: " + id;
 	}
 }
