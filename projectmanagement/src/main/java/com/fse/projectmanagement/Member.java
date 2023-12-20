@@ -48,6 +48,6 @@ public class Member {
 	}
 	
 	public String toString() {
-		return String.format("member{@id=%1$s, name=%2$s, projectId=%3$s} ", id.getId(), name, projectId);
+		return String.format("member{@id=%1$s, name=%2$s, projectId=%3$s} ", id.getId(), name, projectId.getId());
 	}
 }
