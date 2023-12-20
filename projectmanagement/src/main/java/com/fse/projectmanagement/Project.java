@@ -1,5 +1,6 @@
 package com.fse.projectmanagement;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Project {
@@ -40,11 +41,16 @@ public class Project {
 	}
 	
 	public void addMember(Member member) {
+		if(members == null) {
+			members = new HashSet<>();
+		}
 		members.add(member);
 	}
 	
 	public void removeMember(Member member) {
-		// if member existiert nicht im projekt
+		if(members == null) {
+			members = new HashSet<>();
+		}
 		members.remove(member);
 	}
 	
