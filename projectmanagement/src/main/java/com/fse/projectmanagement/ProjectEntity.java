@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("PROJECT")
@@ -12,6 +13,7 @@ public class ProjectEntity {
 	@Id
 	private int id;
 	private String name;
+	@MappedCollection(idColumn = "PROJECT_ID")
 	private Set<MemberEntity> members = new HashSet<>();
 	
 	/** empty constructor needed for creating an object while working with the {@link JdbcProjectEntityRepository} */
