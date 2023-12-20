@@ -37,9 +37,9 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	}
 
 	@Override
-	public boolean assignMember(int id, int mId) {
+	public boolean assignMember(int id, MemberId mId) {
 		Project project = projectRepository.findById(new ProjectId(id));
-		Member member = memberRepository.findById(new MemberId(id));
+		Member member = memberRepository.findById(mId);
 		if (project != null && member != null) {
 			project.addMember(member);
 			projectRepository.save(project);
@@ -49,9 +49,9 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	}
 
 	@Override
-	public boolean unassignMember(int id, int mId) {
+	public boolean unassignMember(int id, MemberId mId) {
 		Project project = projectRepository.findById(new ProjectId(id));
-		Member member = memberRepository.findById(new MemberId(id));
+		Member member = memberRepository.findById(mId);
 		if (project != null && member != null) {
 			project.removeMember(member);
 			projectRepository.save(project);

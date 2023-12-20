@@ -28,6 +28,10 @@ public class Member {
 		return name;
 	}
 	
+	public void setProject(Project project) {
+		this.project = project;
+	}
+	
 	public Project getProject() {
 		return project;
 	}

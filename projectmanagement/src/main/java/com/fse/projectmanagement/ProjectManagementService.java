@@ -5,6 +5,6 @@ public interface ProjectManagementService {
 	public Project read(int id);
 	public boolean delete(int id);
 	
-	public boolean assignMember(int id, int mId);
-	public boolean unassignMember(int id, int mId);
+	public boolean assignMember(int id, MemberId mId);
+	public boolean unassignMember(int id, MemberId mId);
 }

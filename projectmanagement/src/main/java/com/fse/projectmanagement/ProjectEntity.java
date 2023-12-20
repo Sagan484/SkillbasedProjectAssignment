@@ -20,6 +20,13 @@ public class ProjectEntity {
 	public ProjectEntity(Project project) {
 		id = project.getProjectId().getId();
 		name = project.getName();
+		Set<Member> membersFromProject = project.getMembers();
+		Set<MemberEntity> membersToDatabase = new HashSet<>();
+		for (Member member : membersFromProject) {
+			member.setProject(project);
+			membersToDatabase.add(member.toDatabase());
+		}
+		members = membersToDatabase;
 	}
 	
 	public Project toDomain() {

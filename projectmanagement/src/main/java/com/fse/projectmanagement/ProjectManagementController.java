@@ -1,7 +1,11 @@
 package com.fse.projectmanagement;
 
+import java.util.Collection;
+
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,5 +28,16 @@ public class ProjectManagementController {
 			return p.toString();
 		}
 		return "No project found with ID: " + id;
+	}
+	
+	// curl -X PATCH http://localhost:8090/pm/project/{id}/addMember -H "Content-Type:application/json" -d "{ \"id\":9004,\"name\":Schneider}
+	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
+	public boolean assignMemberToProject(@PathVariable int id, @RequestBody MemberId mId) {
+		return projectManagementService.assignMember(id, mId);
+	}
+	
+	@PatchMapping(value = "/project/{id}/removeMember", consumes = {"application/json"})
+	public boolean removeMemberFromProject(@PathVariable int id, @RequestBody MemberId mId) {
+		return projectManagementService.unassignMember(id, mId);
 	}
 }

@@ -20,7 +20,10 @@ public class MemberEntity {
 	public MemberEntity(Member member) {
 		id = member.getMemberId().getId();
 		name = member.getName();
-		projectEntity = member.getProject().toDatabase();
+		Project project = member.getProject();
+		if (project != null) {
+			projectEntity = project.toDatabase();
+		}
 	}
 
 	public Member toDomain() {
