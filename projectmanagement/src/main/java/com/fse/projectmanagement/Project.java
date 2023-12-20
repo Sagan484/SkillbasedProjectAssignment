@@ -1,6 +1,5 @@
 package com.fse.projectmanagement;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class Project {
@@ -40,23 +39,8 @@ public class Project {
 		return members;
 	}
 	
-	public void addMember(Member member) {
-		if(members == null) {
-			members = new HashSet<>();
-		}
-		members.add(member);
-	}
-	
-	public void removeMember(Member member) {
-		if(members == null) {
-			members = new HashSet<>();
-		}
-		members.remove(member);
-	}
-	
 	public String toString() {
 		String membersString = "[";
-		Set<Member> members = getMembers();
 		if(members != null) {
 			for (Member m : members) {
 				membersString += m.toString();
@@ -67,6 +51,6 @@ public class Project {
 		// deleting the last space
 		membersString = membersString.substring(0, membersString.length()-1);
 		membersString += "]";
-		return String.format("project{@id=%1$s, name=%2$s, members=%3$s}", getProjectId().getId() ,getName(), membersString);
+		return String.format("project{@id=%1$s, name=%2$s, members=%3$s}", id.getId() , name, membersString);
 	}
 }

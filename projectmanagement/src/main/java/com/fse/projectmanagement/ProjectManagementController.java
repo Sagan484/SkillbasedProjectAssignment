@@ -1,7 +1,5 @@
 package com.fse.projectmanagement;
 
-import java.util.Collection;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +28,7 @@ public class ProjectManagementController {
 		return "No project found with ID: " + id;
 	}
 	
-	// curl -X PATCH http://localhost:8090/pm/project/{id}/addMember -H "Content-Type:application/json" -d "{ \"id\":9004,\"name\":Schneider}
+	// curl -X PATCH http://localhost:8090/pm/project/1001/addMember -H "Content-Type:application/json" -d "{\"id\":9001}"
 	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
 	public boolean assignMemberToProject(@PathVariable int id, @RequestBody MemberId mId) {
 		return projectManagementService.assignMember(id, mId);

@@ -20,13 +20,6 @@ public class ProjectEntity {
 	public ProjectEntity(Project project) {
 		id = project.getProjectId().getId();
 		name = project.getName();
-		Set<Member> membersFromProject = project.getMembers();
-		Set<MemberEntity> membersToDatabase = new HashSet<>();
-		for (Member member : membersFromProject) {
-			member.setProject(project);
-			membersToDatabase.add(member.toDatabase());
-		}
-		members = membersToDatabase;
 	}
 	
 	public Project toDomain() {
@@ -60,13 +53,8 @@ public class ProjectEntity {
 		return members;
 	}
 	
-	public void setMembers(Set<MemberEntity> members) {
-		this.members = members;
-	}
-	
 	public String toString() {
 		String membersString = "[";
-		Set<MemberEntity> members = getMembers();
 		if(members != null) {
 			for (MemberEntity m : members) {
 				membersString += m.toString();
@@ -77,6 +65,6 @@ public class ProjectEntity {
 		// deleting the last space
 		membersString = membersString.substring(0, membersString.length()-1);
 		membersString += "]";
-		return String.format("projectentity{@id=%1$s, name=%2$s, memberentities=%3$s}", getId() ,getName(), membersString);
+		return String.format("projectentity{@id=%1$s, name=%2$s, memberentities=%3$s}", id ,name, membersString);
 	}
 }
