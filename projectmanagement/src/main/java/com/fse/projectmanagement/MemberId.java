@@ -1,12 +1,9 @@
 package com.fse.projectmanagement;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 public class MemberId {
 
 	private int id;
 	
-	@JsonCreator
 	public MemberId(int id) {
 		this.id = id;
 	}
