@@ -11,11 +11,6 @@ public class BeanConfiguration {
 		return new ProjectManagementApplicationService(projectRepository, memberRepository);
 	}
 
-//	 @Bean
-//	 EventListener eventListener(ProjectManagementService projectManagementService) {
-//			return new EventListener(projectManagementService);
-//	 };
-
 	@Bean
 	ProjectRepository projectRepository(JdbcProjectEntityRepository jdbcProjectEntityRepository) {
 		return new ProjectEntityRepository(jdbcProjectEntityRepository);

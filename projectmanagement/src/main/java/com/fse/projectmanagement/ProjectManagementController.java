@@ -30,12 +30,12 @@ public class ProjectManagementController {
 	
 	// curl -X PATCH http://localhost:8090/pm/project/1001/addMember -H "Content-Type:application/json" -d "{\"id\":9001}"
 	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
-	public boolean assignMemberToProject(@PathVariable int id, @RequestBody MemberId mId) {
-		return projectManagementService.assignMember(id, mId);
+	public boolean assignMemberToProject(@PathVariable int id, @RequestBody MemberTO member) {
+		return projectManagementService.assignMember(id, member);
 	}
 	
 	@PatchMapping(value = "/project/{id}/removeMember", consumes = {"application/json"})
-	public boolean removeMemberFromProject(@PathVariable int id, @RequestBody MemberId mId) {
-		return projectManagementService.unassignMember(id, mId);
+	public boolean removeMemberFromProject(@PathVariable int id, @RequestBody MemberTO member) {
+		return projectManagementService.unassignMember(id, member);
 	}
 }

@@ -1,12 +1,13 @@
 package com.fse.projectmanagement;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Project {
 
 	private ProjectId id;
 	private String name;
-	private Set<Member> members;
+	private Set<Member> members = new HashSet<>();
 	
 	public Project(ProjectId id, String name, Set<Member> members) {
 		this.id = id;
@@ -39,17 +40,24 @@ public class Project {
 		return members;
 	}
 	
+	public void addMember(Member member) {
+		members.add(member);
+	}
+	
+	public void removeMember(Member member) {
+		members.remove(member);
+	}
+	
+	@Override
 	public String toString() {
 		String membersString = "[";
-		if(members != null) {
+		if (!members.isEmpty()) {
 			for (Member m : members) {
 				membersString += m.toString();
 			}
-		} else {
-			membersString += "empty";
+			// deleting the last space
+			membersString = membersString.substring(0, membersString.length() - 1);
 		}
-		// deleting the last space
-		membersString = membersString.substring(0, membersString.length()-1);
 		membersString += "]";
 		return String.format("project{@id=%1$s, name=%2$s, members=%3$s}", id.getId() , name, membersString);
 	}

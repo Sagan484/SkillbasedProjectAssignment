@@ -57,6 +57,7 @@ public class MemberEntity {
 		return projectId;
 	}
 	
+	@Override
 	public String toString() {
 		return String.format("memberentity{@id=%1$s, name=%2$s, projectId=%3$s} ", id, name, projectId);
 	}

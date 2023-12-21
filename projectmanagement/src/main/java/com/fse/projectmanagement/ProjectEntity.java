@@ -55,17 +55,24 @@ public class ProjectEntity {
 		return members;
 	}
 	
+	public void addMember(MemberEntity memberEntity) {
+		members.add(memberEntity);
+	}
+	
+	public void removeMember(MemberEntity memberEntity) {
+		members.remove(memberEntity);
+	}
+	
+	@Override
 	public String toString() {
 		String membersString = "[";
-		if(members != null) {
+		if (!members.isEmpty()) {
 			for (MemberEntity m : members) {
 				membersString += m.toString();
 			}
-		} else {
-			membersString += "empty";
+			// deleting the last space
+			membersString = membersString.substring(0, membersString.length() - 1);
 		}
-		// deleting the last space
-		membersString = membersString.substring(0, membersString.length()-1);
 		membersString += "]";
 		return String.format("projectentity{@id=%1$s, name=%2$s, memberentities=%3$s}", id ,name, membersString);
 	}
