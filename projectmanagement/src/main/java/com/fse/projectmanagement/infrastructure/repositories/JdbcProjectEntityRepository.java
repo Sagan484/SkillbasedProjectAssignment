@@ -1,7 +1,9 @@
-package com.fse.projectmanagement;
+package com.fse.projectmanagement.infrastructure.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import com.fse.projectmanagement.infrastructure.entities.ProjectEntity;
 
 @Repository
 public interface JdbcProjectEntityRepository 

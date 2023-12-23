@@ -1,11 +1,22 @@
 package com.fse.projectmanagement;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fse.projectmanagement.application.MemberDTO;
+import com.fse.projectmanagement.application.ProjectDTO;
+import com.fse.projectmanagement.application.ProjectManagementService;
+
 
 
 @RestController
@@ -18,24 +29,71 @@ public class ProjectManagementController {
 		this.projectManagementService = projectManagementService;
 	}
 	
+	// curl -X POST http://localhost:8090/pm/project -H "Content-Type:application/json" -d "{\"name\":\"Projekt 2\",\"members\":[{\"name\":\"Becker\"}]}"
+	@PostMapping(value = "/project", consumes = {"application/json"})
+	public String createProject(@RequestBody ProjectDTO project) {
+		Integer id = projectManagementService.create(project.getName(), project.getMembers());
+		return "Project created with id " + id;
+	}
+	
 	// curl -X GET http://localhost:8090/pm/project/{id}
-	@GetMapping("/project/{id}")
-	public String getProjectInformation(@PathVariable int id) {	
-		Project p = projectManagementService.read(id);
+	@GetMapping(value = "/project/{id}")
+	public String getProjectInformation(@PathVariable Integer id) {	
+		ProjectDTO p = projectManagementService.read(id);
 		if (p != null) {
 			return p.toString();
 		}
 		return "No project found with ID: " + id;
 	}
 	
-	// curl -X PATCH http://localhost:8090/pm/project/1001/addMember -H "Content-Type:application/json" -d "{\"id\":9001}"
-	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
-	public boolean assignMemberToProject(@PathVariable int id, @RequestBody MemberTO member) {
-		return projectManagementService.assignMember(id, member);
+	// curl -X GET http://localhost:8090/pm/project
+	@GetMapping(value = "/project")
+	public List<String> getAllProjectsInformation() {	
+		List<ProjectDTO> pList = projectManagementService.readAll();
+		List<String> projects = new ArrayList<>();
+		if (!pList.isEmpty()) {
+			pList.stream()
+		            .map(p -> projects.add(p.toString() + "\\"))
+		            .collect(Collectors.toList());
+		} else {
+			projects.add("No projects found.");
+		}
+		return projects;
 	}
 	
+	// curl -X PATCH http://localhost:8090/pm/project/{id} -H "Content-Type:application/json" -d "{\"name\":\"neuer Projektname\"}"
+	@PatchMapping(value = "/project/{id}", consumes = {"application/json"})
+	public String updateProjectName(@PathVariable Integer id, @RequestBody ProjectDTO project) {	
+		if(projectManagementService.changeProjectName(id, project.getName())) {
+			return "Project updated successfully.";
+		}
+		return "No project found with ID: " + id;
+	}
+	
+	// curl -X DELETE http://localhost:8090/pm/project/{id}
+	@DeleteMapping(value = "/project/{id}")
+	public String deleteProject(@PathVariable Integer id) {	
+		if(projectManagementService.delete(id)) {
+			return "Project with id " + id + " successfully deleted.";
+			}
+		return "No project found with ID: " + id;
+	}
+	
+	// curl -X PATCH http://localhost:8090/pm/project/1064/addMember -H "Content-Type:application/json" -d "{\"name\":\"Schmitz\"}"
+	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
+	public String assignMemberToProject(@PathVariable Integer id, @RequestBody MemberDTO member) {
+		if (projectManagementService.assignMember(id, member)) {
+			return "Member successfully added.";
+		}
+		return "No project found with ID: " + id;
+	}
+	
+	// curl -X PATCH http://localhost:8090/pm/project/1064/removeMember -H "Content-Type:application/json" -d "{\"id\":9065, \"name\":\"Müller\"}"
 	@PatchMapping(value = "/project/{id}/removeMember", consumes = {"application/json"})
-	public boolean removeMemberFromProject(@PathVariable int id, @RequestBody MemberTO member) {
-		return projectManagementService.unassignMember(id, member);
+	public String removeMemberFromProject(@PathVariable Integer id, @RequestBody MemberDTO member) {
+		if (projectManagementService.unassignMember(id, member)) {
+			return "Member successfully removed.";
+		}
+		return "No project found with ID: " + id;
 	}
 }
