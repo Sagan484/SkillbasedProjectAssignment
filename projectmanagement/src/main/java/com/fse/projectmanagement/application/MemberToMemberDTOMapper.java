@@ -8,7 +8,7 @@ import com.fse.projectmanagement.domain.aggregates.project.Member;
 
 public class MemberToMemberDTOMapper {
 
-	public static Set<MemberDTO> map(Set<Member> members) {
+	public Set<MemberDTO> map(Set<Member> members) {
 		Set<MemberDTO> memberDTOs = new HashSet<>();
 		memberDTOs = members.stream()
 				.map(m -> new MemberDTO(m.getMemberId().getId(), m.getName()))

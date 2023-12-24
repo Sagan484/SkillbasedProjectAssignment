@@ -3,6 +3,7 @@ package com.fse.projectmanagement.infrastructure;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
 import com.fse.projectmanagement.application.ProjectManagementService;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
@@ -13,8 +14,8 @@ import com.fse.projectmanagement.infrastructure.repositories.ProjectRepositoryIm
 @Configuration
 public class BeanConfiguration {
 	@Bean
-	ProjectManagementService projectManagementService(ProjectRepository projectRepository, ProjectService projectService) {
-		return new ProjectManagementApplicationService(projectRepository, projectService);
+	ProjectManagementService projectManagementService(ProjectRepository projectRepository, ProjectService projectService, MemberToMemberDTOMapper memberMapper) {
+		return new ProjectManagementApplicationService(projectRepository, projectService, memberMapper);
 	}
 
 	@Bean

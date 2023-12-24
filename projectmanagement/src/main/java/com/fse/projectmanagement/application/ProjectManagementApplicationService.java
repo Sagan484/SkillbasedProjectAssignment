@@ -14,10 +14,12 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 
 	private ProjectRepository projectRepository;
 	private ProjectService projectService;
+	private MemberToMemberDTOMapper memberMapper;
 	
-	public ProjectManagementApplicationService(ProjectRepository projectRepository, ProjectService projectService) {
+	public ProjectManagementApplicationService(ProjectRepository projectRepository, ProjectService projectService, MemberToMemberDTOMapper memberMapper) {
 		this.projectRepository = projectRepository;
 		this.projectService = projectService;
+		this.memberMapper = memberMapper;
 	}
 	
 	@Override
@@ -35,7 +37,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	public ProjectDTO read(Integer id) {
 		try {
 		Project p = projectRepository.findById(id);
-		Set<MemberDTO> memberDTOs = MemberToMemberDTOMapper.map(p.getMembers());
+		Set<MemberDTO> memberDTOs = memberMapper.map(p.getMembers());
 		return new ProjectDTO(id, p.getName(), memberDTOs);
 		} catch (IllegalArgumentException e) {
 			return null;
@@ -45,7 +47,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	@Override
 	public List<ProjectDTO> readAll() {
 		return 	projectRepository.findAll().stream()
-	            .map(p -> new ProjectDTO(p.getProjectId().getId(), p.getName(), MemberToMemberDTOMapper.map(p.getMembers())))
+	            .map(p -> new ProjectDTO(p.getProjectId().getId(), p.getName(), memberMapper.map(p.getMembers())))
 	            .collect(Collectors.toList());
 	}
 	
