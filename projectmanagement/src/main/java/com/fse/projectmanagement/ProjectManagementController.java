@@ -64,36 +64,24 @@ public class ProjectManagementController {
 	// curl -X PATCH http://localhost:8090/pm/project/{id} -H "Content-Type:application/json" -d "{\"name\":\"neuer Projektname\"}"
 	@PatchMapping(value = "/project/{id}", consumes = {"application/json"})
 	public String updateProjectName(@PathVariable Integer id, @RequestBody ProjectDTO project) {	
-		if(projectManagementService.changeProjectName(id, project.getName())) {
-			return "Project updated successfully.";
-		}
-		return "No project found with ID: " + id;
+		return projectManagementService.changeProjectName(id, project.getName());
 	}
 	
 	// curl -X DELETE http://localhost:8090/pm/project/{id}
 	@DeleteMapping(value = "/project/{id}")
 	public String deleteProject(@PathVariable Integer id) {	
-		if(projectManagementService.delete(id)) {
-			return "Project with id " + id + " successfully deleted.";
-			}
-		return "No project found with ID: " + id;
+		return projectManagementService.delete(id);
 	}
 	
 	// curl -X PATCH http://localhost:8090/pm/project/1064/addMember -H "Content-Type:application/json" -d "{\"name\":\"Schmitz\"}"
 	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
 	public String assignMemberToProject(@PathVariable Integer id, @RequestBody MemberDTO member) {
-		if (projectManagementService.assignMember(id, member)) {
-			return "Member successfully added.";
-		}
-		return "No project found with ID: " + id;
+		return projectManagementService.assignMember(id, member);
 	}
 	
-	// curl -X PATCH http://localhost:8090/pm/project/1064/removeMember -H "Content-Type:application/json" -d "{\"id\":9065, \"name\":\"Müller\"}"
+	// curl -X PATCH http://localhost:8090/pm/project/1064/removeMember -H "Content-Type:application/json" -d "{\"id\":9065}"
 	@PatchMapping(value = "/project/{id}/removeMember", consumes = {"application/json"})
 	public String removeMemberFromProject(@PathVariable Integer id, @RequestBody MemberDTO member) {
-		if (projectManagementService.unassignMember(id, member)) {
-			return "Member successfully removed.";
-		}
-		return "No project found with ID: " + id;
+		return projectManagementService.unassignMember(id, member);
 	}
 }

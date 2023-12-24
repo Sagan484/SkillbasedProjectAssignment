@@ -1,6 +1,7 @@
 package com.fse.projectmanagement.domain.services;
 
 import com.fse.projectmanagement.domain.aggregates.project.Member;
+import com.fse.projectmanagement.domain.aggregates.project.MemberId;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 
@@ -24,9 +25,9 @@ public class ProjectService {
 		projectRepository.save(project);
 	}
 	
-	public void removeMember(Integer id, Member member) {
+	public void removeMember(Integer id, MemberId memberId) {
 		Project project = projectRepository.findById(id);
-		project.removeMember(member);
+		project.removeMember(memberId);
 		projectRepository.save(project);
 	}
 }

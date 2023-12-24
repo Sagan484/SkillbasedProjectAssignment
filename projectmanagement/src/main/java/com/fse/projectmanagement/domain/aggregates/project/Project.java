@@ -23,9 +23,9 @@ public class Project {
 		members.add(member);
 	}
 	
-	public void removeMember(Member member) {
-		Member m = getMember(member.getMemberId());
-		members.remove(m);
+	public boolean removeMember(MemberId id) {
+		Member m = getMember(id);
+		return members.remove(m);
 	}
 	
 	private Member getMember(MemberId id) {

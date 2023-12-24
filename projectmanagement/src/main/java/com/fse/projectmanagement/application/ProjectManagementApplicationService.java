@@ -52,43 +52,43 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	}
 	
 	@Override
-	public boolean changeProjectName(Integer id, String name) {
+	public String changeProjectName(Integer id, String name) {
 		try {
 			projectService.changeProjectName(id, name);
-			return true;
+			return "Project updated successfully.";
 		} catch (IllegalArgumentException e) {
-			return false;
+			return e.getMessage();
 		}
 	}
 
 	@Override
-	public boolean delete(Integer id) {
+	public String delete(Integer id) {
 		try {
 			Project p = projectRepository.findById(id);
 			projectRepository.delete(p);
-			return true;
+			return "Project with id " + id + " successfully deleted.";
 		} catch (IllegalArgumentException e) {
-			return false;
+			return e.getMessage();
 		}
 	}
 
 	@Override
-	public boolean assignMember(Integer id, MemberDTO memberDto) {
+	public String assignMember(Integer id, MemberDTO memberDto) {
 		try {
 			projectService.addMember(id, memberDto.toDomain());
-			return true;
+			return "Member successfully added.";
 		} catch (IllegalArgumentException e) {
-			return false;
+			return e.getMessage();
 		}
 	}
 
 	@Override
-	public boolean unassignMember(Integer id, MemberDTO memberDto) {
+	public String unassignMember(Integer id, MemberDTO memberDto) {
 		try {
-			projectService.removeMember(id, memberDto.toDomain());
-			return true;
+			projectService.removeMember(id, memberDto.toDomain().getMemberId());
+			return "Member successfully removed.";
 		} catch (IllegalArgumentException e) {
-			return false;
+			return e.getMessage();
 		}
 	}
 }
