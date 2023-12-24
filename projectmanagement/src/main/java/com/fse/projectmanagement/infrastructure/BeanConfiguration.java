@@ -27,5 +27,9 @@ public class BeanConfiguration {
 	ProjectService projectService(ProjectRepository projectRepository) {
 		return new ProjectService(projectRepository);
 	}
+	
+	@Bean MemberToMemberDTOMapper memberMapper() {
+		return new MemberToMemberDTOMapper();
+	}
 }
 
