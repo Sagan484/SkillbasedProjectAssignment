@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class PropertiesConfig {
 
-	@Value("${rabbitmq.queue.remove.members.name}")
+	@Value("${rabbitmq.queue.manage.members.name}")
 	private String queueManageMembersName;
 	
-	@Value("${rabbitmq.queue.remove.members.durable}")
+	@Value("${rabbitmq.queue.manage.members.durable}")
 	private boolean isQueueManageMembersDurable;
 	
-	@Value("${rabbitmq.queue.remove.members.routing.key}")
+	@Value("${rabbitmq.queue.manage.members.routing.key}")
 	private String queueManageMembersRoutingKey;
 	
 	@Value("${rabbitmq.exchange.name}")

@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,22 +26,22 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	private MemberToMemberDTOMapper memberMapper;
 	private RequirementToRequirementDTOMapper requirementMapper;
 	private DTOtoDomainMapper dtoToDomainMapper;
-	private AmqpTemplate amqpTemplate;
+	private RabbitTemplate rabbitTemplate;
 	private PropertiesConfig config;
-	
+		
 	public ProjectManagementApplicationService(ProjectRepository projectRepository,
 			ProjectService projectService,
 			MemberToMemberDTOMapper memberMapper,
 			RequirementToRequirementDTOMapper requirementMapper,
 			DTOtoDomainMapper dtoToDomainMapper,
-			AmqpTemplate amqpTemplate,
+			RabbitTemplate rabbitTemplate,
 			PropertiesConfig config) {
 		this.projectRepository = projectRepository;
 		this.projectService = projectService;
 		this.memberMapper = memberMapper;
 		this.requirementMapper = requirementMapper;
 		this.dtoToDomainMapper = dtoToDomainMapper;
-		this.amqpTemplate = amqpTemplate;
+		this.rabbitTemplate = rabbitTemplate;
 		this.config = config;
 	}
 	
@@ -93,19 +96,32 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	@Override
 	public String assignMember(Integer id, MemberDTO memberDto) {
 		try {
-			projectService.addMember(id, memberDto.toDomain());
 			Project p = projectRepository.findById(id);
 			List<String> requirements = p.getRequirements().stream()
 					.map(r -> r.getName())
 					.collect(Collectors.toList());
 			ObjectMapper objectMapper = new ObjectMapper();
 			String payload = objectMapper.writeValueAsString(memberDto) + "\n" + objectMapper.writeValueAsString(requirements);
-			amqpTemplate.convertAndSend(config.getExchangeName(), "member.added", payload);
-			return "Member successfully added.";
+			rabbitTemplate.setReceiveTimeout(30000);
+			Object areRequirementsMet = rabbitTemplate.convertSendAndReceive(
+					config.getExchangeName(),
+					"member.added",
+					payload,
+					new MessagePostProcessor() {
+						public Message postProcessMessage(Message message) throws AmqpException {
+					      message.getMessageProperties().setReplyTo(config.getQueueManageMembersName());
+					      return message;  
+					   }
+					});
+			if (areRequirementsMet != null) {
+				projectService.addMember(id, memberDto.toDomain());
+				return "Member successfully added.";
+			}
+			return "Member is missing some skill.";
 		} catch (IllegalArgumentException e) {
 			return e.getMessage();
 		} catch (JsonProcessingException e) {
-			return "Member added. Message could not be send. Cause: " + e.getMessage();
+			return "Message could not be send. Cause: " + e.getMessage();
 		}
 	}
 

@@ -9,7 +9,7 @@ public class SkillDTO {
 	private String area;
 	
 	@JsonCreator
-	public SkillDTO (@JsonProperty("name ")String name, @JsonProperty("area") String area) {
+	public SkillDTO (@JsonProperty("name") String name, @JsonProperty("area") String area) {
 		this.name = name;
 		this.area = area;
 	}
@@ -28,6 +28,6 @@ public class SkillDTO {
 	
 	@Override
 	public String toString() {
-		return String.format("Name: %s, Area: %s: %s", name, area);
+		return String.format("Name: %s, Area: %s", name, area);
 	}
 }

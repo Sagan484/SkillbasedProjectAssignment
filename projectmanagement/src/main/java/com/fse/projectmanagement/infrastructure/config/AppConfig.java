@@ -1,6 +1,6 @@
 package com.fse.projectmanagement.infrastructure.config;
 
-import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,14 +23,14 @@ public class AppConfig {
 			MemberToMemberDTOMapper memberMapper,
 			RequirementToRequirementDTOMapper requirementMapper,
 			DTOtoDomainMapper dtoToDomainMapper,
-			AmqpTemplate amqpTemplate,
+			RabbitTemplate rabbitTemplate,
 			PropertiesConfig config) {
 		return new ProjectManagementApplicationService(projectRepository,
 				projectService,
 				memberMapper,
 				requirementMapper,
 				dtoToDomainMapper,
-				amqpTemplate,
+				rabbitTemplate,
 				config);
 	}
 

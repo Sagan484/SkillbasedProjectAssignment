@@ -3,6 +3,7 @@ package com.fse.skillmanagement.domain.listener;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,12 +18,14 @@ public class CheckSkillsEventListener {
 
 	private MemberService memberService;
 	private PropertiesConfig config;
+	private AmqpTemplate amqpTemplate;
 	
 	private final String QUEUE_CHECK_SKILLS = "checkSkills"; //config.getQueueRemoveMembersName();
 
-	public CheckSkillsEventListener (MemberService memberService, PropertiesConfig config) {
+	public CheckSkillsEventListener (MemberService memberService, PropertiesConfig config, AmqpTemplate amqpTemplate) {
 		this.memberService = memberService;
 		this.config = config;
+		this.amqpTemplate = amqpTemplate;
 	}
 	
 	// spring boot annotation in domaine?
@@ -32,11 +35,11 @@ public class CheckSkillsEventListener {
 			try {
 				List<String> payloadList = payload.lines().collect(Collectors.toList());;
 				ObjectMapper objectMapper = new ObjectMapper();
-				MemberDTO memberDTO = objectMapper.readValue(payloadList.get(0),  MemberDTO.class);
-				List<String> requirements = objectMapper.readValue(payloadList.get(1), new TypeReference<List<String>>(){});
-				if(!memberService.checkSkills(memberDTO.getId(), requirements)) {
-					memberService.remove(memberDTO.getId());
-				}
+				MemberDTO memberDTO = objectMapper.readValue(payloadList.getFirst(), MemberDTO.class);
+				List<String> requirements = objectMapper.readValue(payloadList.getLast(), new TypeReference<List<String>>(){});
+				Boolean areRequirementsValid = memberService.checkSkills(memberDTO.getId(), requirements);
+				payload = objectMapper.writeValueAsString(areRequirementsValid);
+				amqpTemplate.convertAndSend(config.getExchangeName(), "skills.checked", payload);
 			} catch (JsonProcessingException e) {
 				// die folgende Meldung gehört eigentlich in ein Log.
 				System.out.println("Interner Fehler bei der Eventverarbeitung");
