@@ -8,7 +8,7 @@ import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 public class ProjectService {
 	
 	private ProjectRepository projectRepository;
-	
+		
 	public ProjectService(ProjectRepository projectRepository) {
 		this.projectRepository = projectRepository;
 	}
@@ -19,7 +19,12 @@ public class ProjectService {
 		projectRepository.save(project);
 	}
 	
-	public void addMember(Integer id, Member member) {
+	public void deleteProject(Integer id) {
+		Project project = projectRepository.findById(id);
+		projectRepository.delete(project);
+	}
+	
+	public void addMember(Integer id, Member member){
 		Project project = projectRepository.findById(id);
 		project.addMember(member);
 		projectRepository.save(project);

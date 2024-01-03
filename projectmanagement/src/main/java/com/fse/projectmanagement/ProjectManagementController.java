@@ -29,10 +29,10 @@ public class ProjectManagementController {
 		this.projectManagementService = projectManagementService;
 	}
 	
-	// curl -X POST http://localhost:8090/pm/project -H "Content-Type:application/json" -d "{\"name\":\"Projekt 2\",\"members\":[{\"name\":\"Becker\"}]}"
+	// curl -X POST http://localhost:8090/pm/project -H "Content-Type:application/json" -d "{\"name\":\"Projekt 2\",\"members\":[{\"name\":\"Becker\"}],\"requirements\":[{\"name\":\"Java\"}, {\"name\":\"Oracle\"}, {\"name\":\"Englisch\"}]}"
 	@PostMapping(value = "/project", consumes = {"application/json"})
 	public String createProject(@RequestBody ProjectDTO project) {
-		Integer id = projectManagementService.create(project.getName(), project.getMembers());
+		Integer id = projectManagementService.create(project.getName(), project.getMembers(), project.getRequirements());
 		return "Project created with id " + id;
 	}
 	
@@ -53,7 +53,7 @@ public class ProjectManagementController {
 		List<String> projects = new ArrayList<>();
 		if (!pList.isEmpty()) {
 			pList.stream()
-		            .map(p -> projects.add(p.toString() + "\\"))
+		            .map(p -> projects.add(p.toString() + "\n"))
 		            .collect(Collectors.toList());
 		} else {
 			projects.add("No projects found.");
@@ -73,13 +73,13 @@ public class ProjectManagementController {
 		return projectManagementService.delete(id);
 	}
 	
-	// curl -X PATCH http://localhost:8090/pm/project/1064/addMember -H "Content-Type:application/json" -d "{\"name\":\"Schmitz\"}"
+	// curl -X PATCH http://localhost:8090/pm/project/1064/addMember -H "Content-Type:application/json" -d "{\"id\":9064, \"name\":\"Schmitz\"}"
 	@PatchMapping(value = "/project/{id}/addMember", consumes = {"application/json"})
 	public String assignMemberToProject(@PathVariable Integer id, @RequestBody MemberDTO member) {
 		return projectManagementService.assignMember(id, member);
 	}
 	
-	// curl -X PATCH http://localhost:8090/pm/project/1064/removeMember -H "Content-Type:application/json" -d "{\"id\":9065}"
+	// curl -X PATCH http://localhost:8090/pm/project/1064/removeMember -H "Content-Type:application/json" -d "{\"id\":9064, \"name\":\"Schmitz\"}"
 	@PatchMapping(value = "/project/{id}/removeMember", consumes = {"application/json"})
 	public String removeMemberFromProject(@PathVariable Integer id, @RequestBody MemberDTO member) {
 		return projectManagementService.unassignMember(id, member);

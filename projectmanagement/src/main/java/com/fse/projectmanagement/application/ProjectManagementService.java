@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface ProjectManagementService {
-	public Integer create(String name, Set<MemberDTO> memberDtos);
+	public Integer create(String name, Set<MemberDTO> memberDtos, Set<RequirementDTO> requirementDtos);
 	public ProjectDTO read(Integer id);
 	public List<ProjectDTO> readAll();
 	public String changeProjectName(Integer id, String name);

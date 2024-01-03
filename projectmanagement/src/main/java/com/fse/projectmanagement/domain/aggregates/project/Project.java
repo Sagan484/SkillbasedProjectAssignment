@@ -7,15 +7,21 @@ public class Project {
 	private ProjectId id;
 	private String name;
 	private Set<Member> members;
+	private Set<Requirement> requirements;
 	
-	public Project(ProjectId id, String name, Set<Member> members) {
+	public Project(ProjectId id, String name, Set<Member> members, Set<Requirement> requirements) {
 		this.id = id;
 		this.name = name;
 		this.members = members;
+		this.requirements = requirements;
 	}
 
 	public void changeName(String name) {
 		this.name = name;
+	}
+	
+	public void changeRequirements(Set<Requirement> requirements) {
+		this.requirements = requirements;
 	}
 
 	
@@ -46,5 +52,9 @@ public class Project {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public Set<Requirement> getRequirements() {
+		return requirements;
 	}
 }

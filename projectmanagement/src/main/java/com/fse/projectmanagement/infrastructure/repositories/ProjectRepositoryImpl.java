@@ -17,7 +17,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 	
 	@Override
 	public Project findById(Integer projectId) {
-		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("No project found."));
+		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("No project found with id " + projectId));
 		return projectEntity.toDomain();
 	}
 	

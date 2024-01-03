@@ -4,33 +4,51 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.core.AmqpTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.aggregates.project.ProjectId;
+import com.fse.projectmanagement.domain.aggregates.project.Requirement;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.ProjectService;
+import com.fse.projectmanagement.infrastructure.config.PropertiesConfig;
 
 public class ProjectManagementApplicationService implements ProjectManagementService {
 
 	private ProjectRepository projectRepository;
 	private ProjectService projectService;
 	private MemberToMemberDTOMapper memberMapper;
+	private RequirementToRequirementDTOMapper requirementMapper;
+	private DTOtoDomainMapper dtoToDomainMapper;
+	private AmqpTemplate amqpTemplate;
+	private PropertiesConfig config;
 	
-	public ProjectManagementApplicationService(ProjectRepository projectRepository, ProjectService projectService, MemberToMemberDTOMapper memberMapper) {
+	public ProjectManagementApplicationService(ProjectRepository projectRepository,
+			ProjectService projectService,
+			MemberToMemberDTOMapper memberMapper,
+			RequirementToRequirementDTOMapper requirementMapper,
+			DTOtoDomainMapper dtoToDomainMapper,
+			AmqpTemplate amqpTemplate,
+			PropertiesConfig config) {
 		this.projectRepository = projectRepository;
 		this.projectService = projectService;
 		this.memberMapper = memberMapper;
+		this.requirementMapper = requirementMapper;
+		this.dtoToDomainMapper = dtoToDomainMapper;
+		this.amqpTemplate = amqpTemplate;
+		this.config = config;
 	}
 	
 	@Override
-	public Integer create(String name, Set<MemberDTO> mList) {
-		Set<Member> members = mList.stream()
-				.map(m -> m.toDomain())
-				.collect(Collectors.toSet());
+	public Integer create(String name, Set<MemberDTO> mSet, Set<RequirementDTO> rSet) {
+		Set<Member> members = dtoToDomainMapper.map(mSet);
+		Set<Requirement> requirements = dtoToDomainMapper.map(rSet);
 		// DTO erstellen und übergeben und im repository zu Project?
-        final Project p = new Project(new ProjectId(null), name, members);
+        Project p = new Project(new ProjectId(null), name, members, requirements);
         return projectRepository.save(p);
-
 	}
 
 	@Override
@@ -38,7 +56,8 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 		try {
 		Project p = projectRepository.findById(id);
 		Set<MemberDTO> memberDTOs = memberMapper.map(p.getMembers());
-		return new ProjectDTO(id, p.getName(), memberDTOs);
+		Set<RequirementDTO> requirementDTOs = requirementMapper.map(p.getRequirements());
+		return new ProjectDTO(id, p.getName(), memberDTOs, requirementDTOs);
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -47,7 +66,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	@Override
 	public List<ProjectDTO> readAll() {
 		return 	projectRepository.findAll().stream()
-	            .map(p -> new ProjectDTO(p.getProjectId().getId(), p.getName(), memberMapper.map(p.getMembers())))
+	            .map(p -> new ProjectDTO(p.getProjectId().getId(), p.getName(), memberMapper.map(p.getMembers()), requirementMapper.map(p.getRequirements())))
 	            .collect(Collectors.toList());
 	}
 	
@@ -64,8 +83,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	@Override
 	public String delete(Integer id) {
 		try {
-			Project p = projectRepository.findById(id);
-			projectRepository.delete(p);
+			projectService.deleteProject(id);
 			return "Project with id " + id + " successfully deleted.";
 		} catch (IllegalArgumentException e) {
 			return e.getMessage();
@@ -76,9 +94,18 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	public String assignMember(Integer id, MemberDTO memberDto) {
 		try {
 			projectService.addMember(id, memberDto.toDomain());
+			Project p = projectRepository.findById(id);
+			List<String> requirements = p.getRequirements().stream()
+					.map(r -> r.getName())
+					.collect(Collectors.toList());
+			ObjectMapper objectMapper = new ObjectMapper();
+			String payload = objectMapper.writeValueAsString(memberDto) + "\n" + objectMapper.writeValueAsString(requirements);
+			amqpTemplate.convertAndSend(config.getExchangeName(), "member.added", payload);
 			return "Member successfully added.";
 		} catch (IllegalArgumentException e) {
 			return e.getMessage();
+		} catch (JsonProcessingException e) {
+			return "Member added. Message could not be send. Cause: " + e.getMessage();
 		}
 	}
 

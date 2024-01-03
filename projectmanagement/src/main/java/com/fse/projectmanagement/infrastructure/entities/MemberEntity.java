@@ -8,7 +8,7 @@ import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.MemberId;
 import com.fse.projectmanagement.infrastructure.repositories.JdbcProjectEntityRepository;
 
-@Table(name = "MEMBER")
+@Table("MEMBER")
 public class MemberEntity {
 
 	@Id
