@@ -2,6 +2,7 @@ package com.fse.skillmanagement.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class SkillManagementApplicationService implements SkillManagementService
 		try {
 			memberService.changeName(memberDto.getId(), memberDto.getName());
 			return true;
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}
@@ -48,7 +49,7 @@ public class SkillManagementApplicationService implements SkillManagementService
 		try {
 		Member m = memberRepository.findById(id);
 		return skillMapper.map(m.getSkills());
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return null;
 		}
 	}
@@ -67,7 +68,7 @@ public class SkillManagementApplicationService implements SkillManagementService
 			Member m = memberRepository.findById(id);
 			memberRepository.delete(m);
 			return true;
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}
@@ -77,7 +78,7 @@ public class SkillManagementApplicationService implements SkillManagementService
 		try {
 			memberService.addSkill(id, skillDTO.toDomain());
 			return true;
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}
@@ -87,7 +88,7 @@ public class SkillManagementApplicationService implements SkillManagementService
 		try {
 			memberService.removeSkill(id, skillDTO.toDomain());
 			return true;
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}

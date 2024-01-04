@@ -1,6 +1,7 @@
 package com.fse.projectmanagement.application;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -64,7 +65,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 		try {
 			projectService.changeProjectName(id, name);
 			return "Project updated successfully.";
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return e.getMessage();
 		}
 	}
@@ -74,7 +75,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 		try {
 			projectService.deleteProject(id);
 			return "Project with id " + id + " successfully deleted.";
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return e.getMessage();
 		}
 	}
@@ -89,7 +90,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 		try {
 			projectService.removeMember(id, memberDto.toDomain().getMemberId());
 			return "Member successfully removed.";
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return e.getMessage();
 		}
 	}

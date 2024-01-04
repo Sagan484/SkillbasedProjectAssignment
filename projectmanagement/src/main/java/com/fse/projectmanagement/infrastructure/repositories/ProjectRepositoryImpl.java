@@ -2,6 +2,7 @@ package com.fse.projectmanagement.infrastructure.repositories;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
@@ -17,7 +18,7 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 	
 	@Override
 	public Project findById(Integer projectId) {
-		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("No project found with id " + projectId));
+		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId).orElseThrow(() -> new NoSuchElementException("No project found with id " + projectId));
 		return projectEntity.toDomain();
 	}
 	

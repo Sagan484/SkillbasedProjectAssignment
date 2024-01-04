@@ -2,6 +2,7 @@ package com.fse.skillmanagement.infrastructure.repositories;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.fse.skillmanagement.domain.aggregates.member.Member;
 import com.fse.skillmanagement.domain.repositories.MemberRepository;
@@ -17,7 +18,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 	
 	@Override
 	public Member findById(Integer memberId) {
-		MemberEntity memberEntity = jdbcMemberEntityRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("No member found with id " + memberId));
+		MemberEntity memberEntity = jdbcMemberEntityRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("No member found with id " + memberId));
 		return memberEntity.toDomain();
 	}
 	

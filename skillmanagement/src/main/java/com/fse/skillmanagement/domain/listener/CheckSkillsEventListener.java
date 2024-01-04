@@ -1,6 +1,7 @@
 package com.fse.skillmanagement.domain.listener;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -42,7 +43,7 @@ public class CheckSkillsEventListener {
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 				return result;
-			} catch (IllegalArgumentException e) {
+			} catch (NoSuchElementException e) {
 				return e.getMessage();
 			}
 			return result;

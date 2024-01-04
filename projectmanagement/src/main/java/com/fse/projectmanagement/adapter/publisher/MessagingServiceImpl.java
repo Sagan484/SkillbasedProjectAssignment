@@ -20,7 +20,7 @@ public class MessagingServiceImpl implements MessagingService {
 	@Override
 	public <T extends DomainEvent> String send(T event) {
 		if (event.getClass().equals(MemberTemporalyAddedEvent.class)) {
-			rabbitTemplate.setReplyTimeout(30000);
+			rabbitTemplate.setReplyTimeout(10000);
 			Object response = rabbitTemplate.convertSendAndReceive(
 					config.getExchangeName(),
 					"member.added",
