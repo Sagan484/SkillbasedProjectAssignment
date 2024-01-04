@@ -2,3 +2,5 @@
 projectmanagement/.mvn/wrapper/maven-wrapper.properties
 skillmanagement/.mvn/wrapper/maven-wrapper.properties
 .project
+skillmanagement/mvnw
+skillmanagement/mvnw.cmd
