@@ -31,7 +31,16 @@ public class SkillManagementApplicationService implements SkillManagementService
 		// DTO erstellen und übergeben und im repository zu Member?
         Member m = new Member(new MemberId(null), name, skills);
         return memberRepository.save(m);
-
+	}
+	
+	@Override
+	public boolean changeMemberName(MemberDTO memberDto) {
+		try {
+			memberService.changeName(memberDto.getId(), memberDto.getName());
+			return true;
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 	@Override
