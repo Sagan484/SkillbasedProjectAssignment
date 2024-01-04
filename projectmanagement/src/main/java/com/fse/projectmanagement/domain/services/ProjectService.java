@@ -34,24 +34,30 @@ public class ProjectService {
 		projectRepository.delete(project);
 	}
 
-	public void addMember(Integer id, Member member) {
+	public String addMember(Integer id, Member member) {
 		Project project = projectRepository.findById(id);
 		List<String> requirements = project.getRequirements().stream().map(r -> r.getName())
 				.collect(Collectors.toList());
 		MemberDTO memberDto = new MemberDTO(member.getMemberId().getId(), member.getName());
-		Boolean areSkillsValid = false;
+		String response = null;
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			String payload = objectMapper.writeValueAsString(memberDto) + "\n"
 					+ objectMapper.writeValueAsString(requirements);
-			areSkillsValid = (Boolean) messagingService.send(new MemberTemporalyAddedEvent(payload));
+			response = messagingService.send(new MemberTemporalyAddedEvent(payload));
 		} catch (JsonProcessingException e) {
 			System.out.println("Message could not be send. Cause: " + e.getMessage());
 		}
+		if (response.contains("No member found with id ")) {
+			return response;
+		}
+		boolean areSkillsValid = Boolean.valueOf(response);
 		if (areSkillsValid) {
 			project.addMember(member);
 			projectRepository.save(project);
+			return "Member successfully added.";
 		}
+		return "Member is missing some skill.";
 	}
 
 	public void removeMember(Integer id, MemberId memberId) {

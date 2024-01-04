@@ -81,8 +81,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 
 	@Override
 	public String assignMember(Integer id, MemberDTO memberDto) {
-		projectService.addMember(id, memberDto.toDomain());
-		return "Member successfully added.";
+		return projectService.addMember(id, memberDto.toDomain());
 	}
 
 	@Override

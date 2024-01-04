@@ -1,11 +1,12 @@
 package com.fse.projectmanagement.infrastructure.config;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.fse.projectmanagement.adapter.messaging.MessagingService;
-import com.fse.projectmanagement.adapter.messaging.MessagingServiceImpl;
+import com.fse.projectmanagement.adapter.publisher.MessagingServiceImpl;
 import com.fse.projectmanagement.application.DTOtoDomainMapper;
 import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;

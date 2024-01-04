@@ -1,6 +1,5 @@
 package com.fse.skillmanagement.infrastructure.config;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,8 +38,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	CheckSkillsEventListener removeMemberEventListener(MemberService memberService, PropertiesConfig config, RabbitTemplate rabbitTemplate) {
-		return new CheckSkillsEventListener(memberService, config, rabbitTemplate);
+	CheckSkillsEventListener removeMemberEventListener(MemberService memberService, PropertiesConfig config) {
+		return new CheckSkillsEventListener(memberService, config);
 	}
 }
 
