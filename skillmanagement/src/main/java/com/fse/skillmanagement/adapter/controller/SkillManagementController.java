@@ -1,4 +1,4 @@
-package com.fse.skillmanagement;
+package com.fse.skillmanagement.adapter.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +26,20 @@ private SkillManagementService skillManagementService;
 		this.skillManagementService = skillManagementService;
 	}
 	
-	// curl -X POST http://localhost:8091/sm/member -H "Content-Type:application/json" -d "{\"name\":\"Schmitz\",\"skills\":[{\"name\":\"Java\", \"area\":\"Programmierung\", ,\"certificates\":[{\"name\":\"Java-Zertifikat 1\", \"name\":\"Java-Zertifikat 2\"}]]}"
+	// curl -X POST http://localhost:8091/sm/member -H "Content-Type:application/json" -d "{\"name\":\"Schmitz\",\"skills\":[{\"name\":\"Java\", \"area\":\"Programmierung\"}]}"
 	@PostMapping(value = "/member", consumes = {"application/json"})
 	public String createMember(@RequestBody MemberDTO member) {
 		Integer id = skillManagementService.create(member.getName(), member.getSkills());
 		return "Member created with id " + id;
+	}
+	
+	// curl -X PATCH http://localhost:8091/sm/member -H "Content-Type:application/json" -d "{\"id\":9001 \"name\":\"neuer Schmitz\"}"
+	@PatchMapping(value = "/member", consumes = {"application/json"})
+	public String changeMemberName(@RequestBody MemberDTO member) {
+		if(skillManagementService.changeMemberName(member)) {
+			return "Member name changed successfully.";
+		}
+		return "No member found with ID: " + member.getId();
 	}
 	
 	// curl -X GET http://localhost:8091/sm/skill/{id}

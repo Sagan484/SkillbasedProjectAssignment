@@ -3,7 +3,6 @@ package com.fse.skillmanagement.domain.aggregates.member;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class Member {
 
@@ -15,6 +14,10 @@ public class Member {
 		this.id = id;
 		this.name = name;
 		this.skills = skills;
+	}
+	
+	public void changeName(String name) {
+		this.name = name;
 	}
 
 	public void addSkill(Skill skill) {

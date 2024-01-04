@@ -34,4 +34,11 @@ public class MemberService {
 		Member member = memberRepository.findById(id);
 		memberRepository.delete(member);
 	}
+
+	public void changeName(Integer id, String name) {
+		Member member = memberRepository.findById(id);
+		member.changeName(name);
+		memberRepository.save(member);
+		
+	}
 }

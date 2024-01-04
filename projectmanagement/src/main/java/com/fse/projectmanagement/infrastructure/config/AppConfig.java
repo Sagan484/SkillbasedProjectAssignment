@@ -4,6 +4,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.fse.projectmanagement.adapter.messaging.MessagingService;
+import com.fse.projectmanagement.adapter.messaging.MessagingServiceImpl;
 import com.fse.projectmanagement.application.DTOtoDomainMapper;
 import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
@@ -22,16 +24,12 @@ public class AppConfig {
 			ProjectService projectService,
 			MemberToMemberDTOMapper memberMapper,
 			RequirementToRequirementDTOMapper requirementMapper,
-			DTOtoDomainMapper dtoToDomainMapper,
-			RabbitTemplate rabbitTemplate,
-			PropertiesConfig config) {
+			DTOtoDomainMapper dtoToDomainMapper) {
 		return new ProjectManagementApplicationService(projectRepository,
 				projectService,
 				memberMapper,
 				requirementMapper,
-				dtoToDomainMapper,
-				rabbitTemplate,
-				config);
+				dtoToDomainMapper);
 	}
 
 	@Bean
@@ -40,8 +38,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	ProjectService projectService(ProjectRepository projectRepository) {
-		return new ProjectService(projectRepository);
+	ProjectService projectService(ProjectRepository projectRepository, MessagingService messagingService) {
+		return new ProjectService(projectRepository, messagingService);
 	}
 	
 	@Bean MemberToMemberDTOMapper memberMapper() {
@@ -54,6 +52,10 @@ public class AppConfig {
 	
 	@Bean DTOtoDomainMapper dtoToDomainMapper() {
 		return new DTOtoDomainMapper();
+	}
+	
+	@Bean MessagingService messagingService(RabbitTemplate rabbitTemplate, PropertiesConfig config) {
+		return new MessagingServiceImpl(rabbitTemplate, config);
 	}
 }
 

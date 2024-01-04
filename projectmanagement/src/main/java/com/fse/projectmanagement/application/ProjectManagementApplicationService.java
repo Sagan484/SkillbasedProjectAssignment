@@ -4,20 +4,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessagePostProcessor;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.aggregates.project.ProjectId;
 import com.fse.projectmanagement.domain.aggregates.project.Requirement;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.ProjectService;
-import com.fse.projectmanagement.infrastructure.config.PropertiesConfig;
 
 public class ProjectManagementApplicationService implements ProjectManagementService {
 
@@ -26,23 +18,17 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	private MemberToMemberDTOMapper memberMapper;
 	private RequirementToRequirementDTOMapper requirementMapper;
 	private DTOtoDomainMapper dtoToDomainMapper;
-	private RabbitTemplate rabbitTemplate;
-	private PropertiesConfig config;
 		
 	public ProjectManagementApplicationService(ProjectRepository projectRepository,
 			ProjectService projectService,
 			MemberToMemberDTOMapper memberMapper,
 			RequirementToRequirementDTOMapper requirementMapper,
-			DTOtoDomainMapper dtoToDomainMapper,
-			RabbitTemplate rabbitTemplate,
-			PropertiesConfig config) {
+			DTOtoDomainMapper dtoToDomainMapper) {
 		this.projectRepository = projectRepository;
 		this.projectService = projectService;
 		this.memberMapper = memberMapper;
 		this.requirementMapper = requirementMapper;
 		this.dtoToDomainMapper = dtoToDomainMapper;
-		this.rabbitTemplate = rabbitTemplate;
-		this.config = config;
 	}
 	
 	@Override
@@ -95,34 +81,8 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 
 	@Override
 	public String assignMember(Integer id, MemberDTO memberDto) {
-		try {
-			Project p = projectRepository.findById(id);
-			List<String> requirements = p.getRequirements().stream()
-					.map(r -> r.getName())
-					.collect(Collectors.toList());
-			ObjectMapper objectMapper = new ObjectMapper();
-			String payload = objectMapper.writeValueAsString(memberDto) + "\n" + objectMapper.writeValueAsString(requirements);
-			rabbitTemplate.setReceiveTimeout(30000);
-			Object areRequirementsMet = rabbitTemplate.convertSendAndReceive(
-					config.getExchangeName(),
-					"member.added",
-					payload,
-					new MessagePostProcessor() {
-						public Message postProcessMessage(Message message) throws AmqpException {
-					      message.getMessageProperties().setReplyTo(config.getQueueManageMembersName());
-					      return message;  
-					   }
-					});
-			if (areRequirementsMet != null) {
-				projectService.addMember(id, memberDto.toDomain());
-				return "Member successfully added.";
-			}
-			return "Member is missing some skill.";
-		} catch (IllegalArgumentException e) {
-			return e.getMessage();
-		} catch (JsonProcessingException e) {
-			return "Message could not be send. Cause: " + e.getMessage();
-		}
+		projectService.addMember(id, memberDto.toDomain());
+		return "Member successfully added.";
 	}
 
 	@Override

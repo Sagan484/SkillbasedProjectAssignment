@@ -11,4 +11,5 @@ public interface SkillManagementService {
 	
 	public boolean addSkillToMember(Integer id, SkillDTO skillDTO);
 	public boolean removeSkillFromMember(Integer id, SkillDTO skillDTO);
+	public boolean changeMemberName(MemberDTO member);
 }

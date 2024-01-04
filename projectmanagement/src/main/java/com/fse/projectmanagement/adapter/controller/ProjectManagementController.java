@@ -1,4 +1,4 @@
-package com.fse.projectmanagement;
+package com.fse.projectmanagement.adapter.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class ProjectManagementController {
 		this.projectManagementService = projectManagementService;
 	}
 	
-	// curl -X POST http://localhost:8090/pm/project -H "Content-Type:application/json" -d "{\"name\":\"Projekt 2\",\"members\":[{\"name\":\"Becker\"}],\"requirements\":[{\"name\":\"Java\"}, {\"name\":\"Oracle\"}, {\"name\":\"Englisch\"}]}"
+	// curl -X POST http://localhost:8090/pm/project -H "Content-Type:application/json" -d "{\"name\":\"Projekt 1\",\"requirements\":[{\"name\":\"Java\"}, {\"name\":\"Oracle\"}, {\"name\":\"Englisch\"}]}"
 	@PostMapping(value = "/project", consumes = {"application/json"})
 	public String createProject(@RequestBody ProjectDTO project) {
 		Integer id = projectManagementService.create(project.getName(), project.getMembers(), project.getRequirements());
