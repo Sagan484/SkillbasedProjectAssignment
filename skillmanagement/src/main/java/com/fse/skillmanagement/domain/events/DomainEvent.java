@@ -1,4 +1,4 @@
-package com.fse.projectmanagement.domain.events;
+package com.fse.skillmanagement.domain.events;
 
 public class DomainEvent {
 	

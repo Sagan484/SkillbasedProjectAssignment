@@ -2,15 +2,20 @@ package com.fse.skillmanagement.domain.services;
 
 import java.util.List;
 
+import com.fse.skillmanagement.adapter.messaging.MessagingService;
 import com.fse.skillmanagement.domain.aggregates.member.Member;
 import com.fse.skillmanagement.domain.aggregates.member.Skill;
+import com.fse.skillmanagement.domain.events.MemberDataChangedEvent;
 import com.fse.skillmanagement.domain.repositories.MemberRepository;
 
 public class MemberService {
-	private MemberRepository memberRepository;
 	
-	public MemberService(MemberRepository memberRepository) {
+	private MemberRepository memberRepository;
+	private MessagingService messagingService;
+	
+	public MemberService(MemberRepository memberRepository, MessagingService messagingService) {
 		this.memberRepository = memberRepository;
+		this.messagingService = messagingService;
 	}
 	
 	public void addSkill(Integer id, Skill skill) {
@@ -39,6 +44,6 @@ public class MemberService {
 		Member member = memberRepository.findById(id);
 		member.changeName(name);
 		memberRepository.save(member);
-		
+		messagingService.send(new MemberDataChangedEvent(member));
 	}
 }

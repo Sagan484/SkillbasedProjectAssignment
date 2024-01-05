@@ -22,6 +22,11 @@ public class MemberDTO {
 		this.skillDTOs = skillDTOs;
 	}
 	
+	public MemberDTO(Integer id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

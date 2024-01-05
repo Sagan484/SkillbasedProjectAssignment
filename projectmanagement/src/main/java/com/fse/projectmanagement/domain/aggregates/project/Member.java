@@ -9,6 +9,10 @@ public class Member {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public void changeName(String name) {
+		this.name = name;
+	}
 
 	public MemberId getMemberId() {
 		return id;

@@ -11,5 +11,4 @@ public interface ProjectRepository {
 
 	public Integer save(Project project);
 	public void delete(Project project);
-	
 }

@@ -1,7 +1,6 @@
 package com.fse.projectmanagement.infrastructure.config;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,9 +11,14 @@ import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
 import com.fse.projectmanagement.application.ProjectManagementService;
 import com.fse.projectmanagement.application.RequirementToRequirementDTOMapper;
+import com.fse.projectmanagement.domain.listener.ManageMembersEventListener;
+import com.fse.projectmanagement.domain.repositories.MemberRepository;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
+import com.fse.projectmanagement.domain.services.MemberService;
 import com.fse.projectmanagement.domain.services.ProjectService;
+import com.fse.projectmanagement.infrastructure.repositories.JdbcMemberEntityRepository;
 import com.fse.projectmanagement.infrastructure.repositories.JdbcProjectEntityRepository;
+import com.fse.projectmanagement.infrastructure.repositories.MemberRepositoryImpl;
 import com.fse.projectmanagement.infrastructure.repositories.ProjectRepositoryImpl;
 
 @Configuration
@@ -43,20 +47,39 @@ public class AppConfig {
 		return new ProjectService(projectRepository, messagingService);
 	}
 	
-	@Bean MemberToMemberDTOMapper memberMapper() {
+	@Bean
+	MemberRepository memberRepository(JdbcMemberEntityRepository jdbcMemberEntityRepository) {
+		return new MemberRepositoryImpl(jdbcMemberEntityRepository);
+	}
+	
+	@Bean
+	MemberService memberService(MemberRepository memberRepository) {
+		return new MemberService(memberRepository);
+	}
+	
+	@Bean
+	MemberToMemberDTOMapper memberMapper() {
 		return new MemberToMemberDTOMapper();
 	}
 	
-	@Bean RequirementToRequirementDTOMapper requirementMappper() {
+	@Bean
+	RequirementToRequirementDTOMapper requirementMappper() {
 		return new RequirementToRequirementDTOMapper();
 	}
 	
-	@Bean DTOtoDomainMapper dtoToDomainMapper() {
+	@Bean
+	DTOtoDomainMapper dtoToDomainMapper() {
 		return new DTOtoDomainMapper();
 	}
 	
-	@Bean MessagingService messagingService(RabbitTemplate rabbitTemplate, PropertiesConfig config) {
+	@Bean
+	MessagingService messagingService(RabbitTemplate rabbitTemplate, PropertiesConfig config) {
 		return new MessagingServiceImpl(rabbitTemplate, config);
+	}
+	
+	@Bean
+	ManageMembersEventListener manageMembersEventListener(MemberService memberService, PropertiesConfig config) {
+		return new ManageMembersEventListener(memberService, config);
 	}
 }
 
