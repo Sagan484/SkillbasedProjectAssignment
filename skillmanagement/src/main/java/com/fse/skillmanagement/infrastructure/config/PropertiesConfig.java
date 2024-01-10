@@ -18,6 +18,9 @@ public class PropertiesConfig {
 	@Value("${rabbitmq.exchange.name}")
 	private String exchangeName;
 	
+    @Value("${spring.kafka.topic.name}")
+    private String topicName;
+	
 	public String getQueueCheckSkillsName() {
 		return queueCheckSkillsName;
 	}
@@ -32,5 +35,9 @@ public class PropertiesConfig {
 
 	public String getExchangeName() {
 		return exchangeName;
+	}
+	
+	public String getTopicName() {
+		return topicName;
 	}
 }

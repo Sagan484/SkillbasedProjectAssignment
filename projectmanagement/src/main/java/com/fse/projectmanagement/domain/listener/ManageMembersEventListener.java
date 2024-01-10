@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.NoSuchElementException;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.kafka.annotation.KafkaListener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -28,7 +29,7 @@ public class ManageMembersEventListener {
 	
 	// spring boot annotation in domaine?
 	 @RabbitListener(queues = QUEUE_MANAGE_MEMBERS)
-		public void listen(String payload) {
+		public void listenRabbit(String payload) {
 			System.out.println("DEBUG Payload: " + payload);
 			try {
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -41,4 +42,19 @@ public class ManageMembersEventListener {
 				System.out.println("Member not found. Probably the member is not assigned to any project.");
 			}
 	}
+	 
+	 @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")
+	 public void listenKafka(String payload) {
+			System.out.println("DEBUG Payload: " + payload);
+			try {
+				ObjectMapper objectMapper = new ObjectMapper();
+				objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+				MemberDTO memberDTO = objectMapper.readValue(payload, MemberDTO.class);
+				memberService.changeMemberData(memberDTO.toDomain());
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			} catch (NoSuchElementException e) {
+				System.out.println("Member not found. Probably the member is not assigned to any project.");
+			}
+	 }
 }

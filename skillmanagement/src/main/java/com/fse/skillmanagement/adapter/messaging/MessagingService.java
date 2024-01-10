@@ -4,5 +4,6 @@ import com.fse.skillmanagement.domain.events.DomainEvent;
 
 public interface MessagingService {
 	
-	public <T extends DomainEvent> void send(T event);
+	public <T extends DomainEvent> void sendViaRabbit(T event);
+	public <T extends DomainEvent> void sendViaKafka(T event);
 }
