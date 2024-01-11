@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.data.relational.core.conversion.DbActionExecutionException;
+
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.infrastructure.entities.ProjectEntity;
@@ -32,12 +34,15 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 
 	@Override
 	public Integer save(Project project) {
-		return jdbcProjectEntityRepository.save(new ProjectEntity(project)).getId();
+		try {
+			return jdbcProjectEntityRepository.save(new ProjectEntity(project)).getId();
+		} catch (DbActionExecutionException e) {
+			return -1;
+		}
 	}
 
 	@Override
 	public void delete(Project project) {
-		jdbcProjectEntityRepository.delete(new ProjectEntity(project));
-		
+		jdbcProjectEntityRepository.delete(new ProjectEntity(project));	
 	}
 }
