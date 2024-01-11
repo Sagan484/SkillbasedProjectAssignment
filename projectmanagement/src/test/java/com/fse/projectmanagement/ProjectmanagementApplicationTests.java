@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,8 @@ public class ProjectmanagementApplicationTests {
 	@Autowired
 	private ProjectRepository projectRepository;
 	
-	private Integer projectId = 9000;
+	private Integer pId = 9000;
+	private Integer mId = 1000;
 	private Set<Requirement> requirements = new HashSet<>();
 	private Set<Member> members = new HashSet<>();
 
@@ -41,7 +43,7 @@ public class ProjectmanagementApplicationTests {
 	void testShouldThrowNPEIfMembersAreNull() {
 		assertThrows(NullPointerException.class,
 	            ()->{
-	            new ProjectEntity(new Project(new ProjectId(projectId), "Test Projekt", null, requirements));
+	            new ProjectEntity(new Project(new ProjectId(pId), "Test Projekt", null, requirements));
 	            });
 	}
 	
@@ -49,7 +51,7 @@ public class ProjectmanagementApplicationTests {
 	void testShouldThrowNPEIfRequirementsAreNull() {
 		assertThrows(NullPointerException.class,
 	            ()->{
-	            new ProjectEntity(new Project(new ProjectId(projectId), "Test Projekt", members, null));
+	            new ProjectEntity(new Project(new ProjectId(pId), "Test Projekt", members, null));
 	            });
 	}
 	
@@ -66,7 +68,7 @@ public class ProjectmanagementApplicationTests {
 	@Test
 	@Transactional
 	void testIfMemberIsAlreadyAssignedToProject() {
-		Member member = new Member(new MemberId(1000), "TestMember");
+		Member member = new Member(new MemberId(mId), "TestMember");
 		Project project = new Project(new ProjectId(null), "Test Projekt", members, requirements);
 		project.addMember(member);
 		Integer projectId1 = projectRepository.save(project);
@@ -85,7 +87,7 @@ public class ProjectmanagementApplicationTests {
 	
 	@Test
 	void testAddingMember() {
-		MemberId memberId = new MemberId(1000);
+		MemberId memberId = new MemberId(mId);
 		Member member = new Member(memberId, "TestMember");
 		Project project = new Project(new ProjectId(null), "Test Projekt", members, requirements);
 		project.addMember(member);
@@ -97,11 +99,19 @@ public class ProjectmanagementApplicationTests {
 	
 	@Test
 	void testRemovingMember() {
-		MemberId memberId = new MemberId(1000);
+		MemberId memberId = new MemberId(mId);
 		Member member = new Member(memberId, "TestMember");
 		members.add(member);
 		Project project = new Project(new ProjectId(null), "Test Projekt", members, requirements);
 		project.removeMember(member.getMemberId());
 		assertThat(project.getMembers()).hasSize(0);
+	}
+	
+	@Test
+	void testShouldThrowNoSuchElementFoundExceptionIfNoMemberFoundForRemovingMember() {
+		Project project = new Project(new ProjectId(pId), "Test Projekt", members, requirements);
+		assertThrows(NoSuchElementException.class,
+				()->{ project.removeMember(new MemberId(mId));
+				}, "Member with id " + mId + " not assigned to project " + pId);
 	}
 }
