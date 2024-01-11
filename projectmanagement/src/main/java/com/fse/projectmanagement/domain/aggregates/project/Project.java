@@ -1,5 +1,6 @@
 package com.fse.projectmanagement.domain.aggregates.project;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class Project {
@@ -38,7 +39,7 @@ public class Project {
 		return members.stream()
 				.filter(member -> member.getMemberId().equals(id))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException(
+				.orElseThrow(() -> new NoSuchElementException(
 						"Member with id " + id.getId() + " not assigned to project " + getProjectId().getId()));
 	}
 	

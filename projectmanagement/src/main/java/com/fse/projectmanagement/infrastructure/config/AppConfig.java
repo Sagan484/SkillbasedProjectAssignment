@@ -3,7 +3,13 @@ package com.fse.projectmanagement.infrastructure.config;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
+import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 
+import com.fse.projectmanagement.adapter.listener.ManageMembersEventListener;
 import com.fse.projectmanagement.adapter.messaging.MessagingService;
 import com.fse.projectmanagement.adapter.publisher.MessagingServiceImpl;
 import com.fse.projectmanagement.application.DTOtoDomainMapper;
@@ -11,7 +17,6 @@ import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
 import com.fse.projectmanagement.application.ProjectManagementService;
 import com.fse.projectmanagement.application.RequirementToRequirementDTOMapper;
-import com.fse.projectmanagement.domain.listener.ManageMembersEventListener;
 import com.fse.projectmanagement.domain.repositories.MemberRepository;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.MemberService;
@@ -73,13 +78,18 @@ public class AppConfig {
 	}
 	
 	@Bean
-	MessagingService messagingService(RabbitTemplate rabbitTemplate, PropertiesConfig config) {
-		return new MessagingServiceImpl(rabbitTemplate, config);
+	MessagingService messagingService(RabbitTemplate rabbitTemplate,
+			ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate,
+			PropertiesConfig config) {
+		return new MessagingServiceImpl(rabbitTemplate, replyingKafkaTemplate, config);
 	}
 	
 	@Bean
 	ManageMembersEventListener manageMembersEventListener(MemberService memberService, PropertiesConfig config) {
 		return new ManageMembersEventListener(memberService, config);
 	}
+	
+	@Bean PropertiesConfig config() {
+		return new PropertiesConfig();
+	}
 }
-

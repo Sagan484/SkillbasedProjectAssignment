@@ -30,22 +30,25 @@ public class ProjectService {
 
 	public String addMember(Integer id, Member member) {
 		Project project = projectRepository.findById(id);
-		String response = messagingService.send(new MemberTemporalyAddedEvent(project, member));
-		if (response != null) {
-			if (response.contains("No member found with id ")) {
-				return response;
-			}
+		//String response = messagingService.sendAndReceiveViaRabbit(new MemberTemporalyAddedEvent(project, member));
+		String response = messagingService.sendAndReceiveViaKafka(new MemberTemporalyAddedEvent(project, member));
+		String result = response;
+		if (response.equalsIgnoreCase("true") || response.equalsIgnoreCase("false")) {
 			boolean areSkillsValid = Boolean.valueOf(response);
 			if (areSkillsValid) {
 				project.addMember(member);
-				projectRepository.save(project);
-				return "Member successfully added.";
+				if (projectRepository.save(project) != -1) {
+					result = "Member successfully added.";
+				} else {
+					result = "Member was already assigned to project.";
+				}
+			} else {
+				result = "Member is missing some skill.";
 			}
-			return "Member is missing some skill.";
 		}
-		return "Message could not be received.";
+		return result;
 	}
-
+	
 	public void removeMember(Integer id, MemberId memberId) {
 		Project project = projectRepository.findById(id);
 		project.removeMember(memberId);

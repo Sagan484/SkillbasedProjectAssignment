@@ -18,8 +18,14 @@ public class PropertiesConfig {
 	@Value("${rabbitmq.exchange.name}")
 	private String exchangeName;
 	
-    @Value("${spring.kafka.topic.name}")
-    private String topicName;
+	@Value("${kafka.topic.name.listener}")
+    private String topicNameListener;
+	
+	@Value("${kafka.topic.name.publisher}")
+    private String topicNamePublisher;
+	
+	@Value("${spring.kafka.consumer.group-id}")
+	private String groupId;
 	
 	public String getQueueCheckSkillsName() {
 		return queueCheckSkillsName;
@@ -37,7 +43,15 @@ public class PropertiesConfig {
 		return exchangeName;
 	}
 	
-	public String getTopicName() {
-		return topicName;
+	public String getTopicNameListener() {
+		return topicNameListener;
+	}
+	
+	public String getTopicNamePublisher() {
+		return topicNamePublisher;
+	}
+	
+	public String getGroupId() {
+		return groupId;
 	}
 }

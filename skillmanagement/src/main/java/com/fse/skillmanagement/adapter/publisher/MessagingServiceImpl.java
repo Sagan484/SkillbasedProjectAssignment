@@ -14,7 +14,9 @@ public class MessagingServiceImpl implements MessagingService {
 	private PropertiesConfig config;
 	private KafkaTemplate<String, String> kafkaTemplate;
 
-	public MessagingServiceImpl(RabbitTemplate rabbitTemplate, KafkaTemplate<String, String> kafkaTemplate, PropertiesConfig config) {
+	public MessagingServiceImpl(RabbitTemplate rabbitTemplate,
+			KafkaTemplate<String, String> kafkaTemplate,
+			PropertiesConfig config) {
 		this.rabbitTemplate = rabbitTemplate;
 		this.kafkaTemplate = kafkaTemplate;
 		this.config = config;
@@ -26,11 +28,11 @@ public class MessagingServiceImpl implements MessagingService {
 			rabbitTemplate.convertAndSend(config.getExchangeName(), "member.changed", event.getPayload());
 		}
 	}
-	
+
 	@Override
 	public <T extends DomainEvent> void sendViaKafka(T event) {
 		if (event.getClass().equals(MemberDataChangedEvent.class)) {
-		kafkaTemplate.send(config.getTopicName(), event.getPayload());
+			kafkaTemplate.send(config.getTopicNamePublisher(), event.getPayload());
 		}
 	}
 }

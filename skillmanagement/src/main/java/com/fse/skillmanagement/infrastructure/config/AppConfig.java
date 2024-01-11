@@ -3,14 +3,15 @@ package com.fse.skillmanagement.infrastructure.config;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.core.KafkaTemplate;
 
+import com.fse.skillmanagement.adapter.listener.CheckSkillsEventListener;
 import com.fse.skillmanagement.adapter.messaging.MessagingService;
 import com.fse.skillmanagement.adapter.publisher.MessagingServiceImpl;
 import com.fse.skillmanagement.application.MemberToMemberDTOMapper;
 import com.fse.skillmanagement.application.SkillManagementApplicationService;
 import com.fse.skillmanagement.application.SkillManagementService;
 import com.fse.skillmanagement.application.SkillToSkillDTOMapper;
-import com.fse.skillmanagement.domain.listener.CheckSkillsEventListener;
 import com.fse.skillmanagement.domain.repositories.MemberRepository;
 import com.fse.skillmanagement.domain.services.MemberService;
 import com.fse.skillmanagement.infrastructure.repositories.JdbcMemberEntityRepository;
@@ -52,8 +53,14 @@ public class AppConfig {
 	}
 	
 	@Bean
-	MessagingService messagingService(RabbitTemplate rabbitTemplate, PropertiesConfig config) {
-		return new MessagingServiceImpl(rabbitTemplate, config);
+	MessagingService messagingService(RabbitTemplate rabbitTemplate,
+			KafkaTemplate<String, String> kafkaTemplate,
+			PropertiesConfig config) {
+		return new MessagingServiceImpl(rabbitTemplate, kafkaTemplate, config);
+	}
+	
+	@Bean PropertiesConfig config() {
+		return new PropertiesConfig();
 	}
 }
 

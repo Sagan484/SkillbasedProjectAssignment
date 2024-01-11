@@ -28,9 +28,5 @@ public class RabbitMQConfig {
 	Binding bindingManageMembers(Queue manageMembers) {
 		return BindingBuilder.bind(manageMembers).to(topicExchange()).with(config.getQueueManageMembersRoutingKey());
 	}
-	
-	@Bean PropertiesConfig config() {
-		return new PropertiesConfig();
-	}
 }
 

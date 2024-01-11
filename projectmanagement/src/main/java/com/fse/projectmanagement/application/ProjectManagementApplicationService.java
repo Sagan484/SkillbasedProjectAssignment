@@ -36,7 +36,6 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	public Integer create(String name, Set<MemberDTO> mSet, Set<RequirementDTO> rSet) {
 		Set<Member> members = dtoToDomainMapper.map(mSet);
 		Set<Requirement> requirements = dtoToDomainMapper.map(rSet);
-		// DTO erstellen und übergeben und im repository zu Project?
         Project p = new Project(new ProjectId(null), name, members, requirements);
         return projectRepository.save(p);
 	}

@@ -28,9 +28,5 @@ public class RabbitMQConfig {
 	Binding bindingCheckSkills(Queue checkSkills) {
 		return BindingBuilder.bind(checkSkills).to(topicExchange()).with(config.getQueueCheckSkillsRoutingKey());
 	}
-	
-	@Bean PropertiesConfig config() {
-		return new PropertiesConfig();
-	}
 }
 

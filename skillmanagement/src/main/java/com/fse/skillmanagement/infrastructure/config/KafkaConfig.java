@@ -12,10 +12,10 @@ public class KafkaConfig {
 	@Autowired
 	private PropertiesConfig config;
 
-	    @Bean
-	    public NewTopic javaguidesTopic(){
-	        return TopicBuilder.name(config.getTopicName())
-	                .build();
-	    }
-
+    @Bean
+    public NewTopic topicListener(){
+        return TopicBuilder.name(config.getTopicNameListener())
+                .build();
+    }
 }
+
