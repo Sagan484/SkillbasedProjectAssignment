@@ -2,6 +2,7 @@ package com.fse.skillmanagement.domain.aggregates.member;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 public class Member {
@@ -33,7 +34,7 @@ public class Member {
 		return skills.stream()
 				.filter(skill -> skill.getName().equals(name) && skill.getArea().equals(area))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException(
+				.orElseThrow(() -> new NoSuchElementException(
 						"Skill '" + name + "' not assigned to member " + getMemberId().getId()));
 	}
 	
