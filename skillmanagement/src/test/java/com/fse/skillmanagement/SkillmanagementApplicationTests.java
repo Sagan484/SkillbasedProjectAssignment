@@ -51,7 +51,10 @@ class SkillmanagementApplicationTests {
 	void testAddingSkill() {
 		Member member = new Member(new MemberId(null), "Test Member", skills);
 		member.addSkill(skill);
-		assertThat(member.getSkills()).hasSize(1);
+		assertThat(member.getSkills())
+				.hasSize(1)
+				.extracting(Skill::getName)
+				.containsExactly("TestSkill");
 	}
 	
 	@Test
