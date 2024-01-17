@@ -70,4 +70,9 @@ public class ProjectEntity {
 	public Set<RequirementEntity> getRequirements() {
 		return requirementEntities;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("ProjektID: %s, Name: %s, Members: %s, Requirements: %s", id, name, memberEntitites, requirementEntities);
+	}
 }

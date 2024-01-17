@@ -34,4 +34,9 @@ public class MemberEntity {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("member ID: %s, name: %s", id, name);
+	}
 }

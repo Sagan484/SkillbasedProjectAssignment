@@ -45,4 +45,9 @@ public class MemberDTO {
 				.collect(Collectors.toSet());
 		return new Member(new MemberId(id), name, skills);
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("member ID: %s, name: %s, skills: %s", id, name, skillDTOs);
+	}
 }

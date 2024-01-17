@@ -55,4 +55,9 @@ public class Member {
 	public Set<Skill> getSkills() {
 		return skills;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("member ID: %s, name: %s, skills: %s", id, name, skills);
+	}
 }

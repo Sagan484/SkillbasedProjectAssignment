@@ -24,4 +24,9 @@ public class Skill {
 	public void changeArea(String area) {
 		this.area = area;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Name: %s, Area: %s", name, area);
+	}
 }

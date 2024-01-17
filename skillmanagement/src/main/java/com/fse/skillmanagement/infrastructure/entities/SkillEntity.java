@@ -30,6 +30,11 @@ public class SkillEntity {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Name: %s, Area: %s", name, area);
+	}
 
 	public String getArea() {
 		return area;

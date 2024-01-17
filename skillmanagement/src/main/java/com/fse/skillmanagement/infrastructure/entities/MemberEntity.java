@@ -65,4 +65,9 @@ public class MemberEntity {
 	public Set<SkillEntity> getSkills() {
 		return skillEntities;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("member ID: %s, name: %s, skills: %s", id, name, skillEntities);
+	}
 }

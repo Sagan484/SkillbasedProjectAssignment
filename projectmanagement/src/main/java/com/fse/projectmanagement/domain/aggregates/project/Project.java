@@ -1,5 +1,6 @@
 package com.fse.projectmanagement.domain.aggregates.project;
 
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -14,6 +15,13 @@ public class Project {
 		this.id = id;
 		this.name = name;
 		this.members = members;
+		this.requirements = requirements;
+	}
+	
+	public Project(ProjectId id, String name, Set<Requirement> requirements) {
+		this.id = id;
+		this.name = name;
+		members = new HashSet<>();
 		this.requirements = requirements;
 	}
 
@@ -57,5 +65,10 @@ public class Project {
 	
 	public Set<Requirement> getRequirements() {
 		return requirements;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("ProjektID: %s, Name: %s, Members: %s, Requirements: %s", id, name, members, requirements);
 	}
 }
