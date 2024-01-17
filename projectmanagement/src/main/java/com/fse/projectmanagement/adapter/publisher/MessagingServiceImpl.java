@@ -36,12 +36,13 @@ public class MessagingServiceImpl implements MessagingService {
 	@Override
 	public <T extends DomainEvent> String sendAndReceiveViaRabbit(T event) {
 		if (event.getClass().equals(MemberTemporalyAddedEvent.class)) {
-			rabbitTemplate.setReplyTimeout(10000);
-			Object response = rabbitTemplate.convertSendAndReceive(
-					config.getExchangeName(),
-					"member.added",
+			rabbitTemplate.setReplyTimeout(60000);
+			Object response = rabbitTemplate.convertSendAndReceive(config.getExchangeName(), "member.added",
 					event.getPayload());
-			return  (String) response;
+			if (response != null) {
+				return (String) response;
+			}
+			return "Response could not be received.";
 		}
 		return null;
 	}

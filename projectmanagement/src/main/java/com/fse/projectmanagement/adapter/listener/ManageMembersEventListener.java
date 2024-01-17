@@ -19,7 +19,7 @@ public class ManageMembersEventListener {
 	private PropertiesConfig config;
 	
 	//TODO fix me
-	private final String QUEUE_MANAGE_MEMBERS = "manageMembers"; //config.getQueueRemoveMembersName();
+	private final String QUEUE_MANAGE_MEMBERS = "manageMembers"; //config.getQueueManageMembersName();
 
 	public ManageMembersEventListener (MemberService memberService, PropertiesConfig config) {
 		this.memberService = memberService;
