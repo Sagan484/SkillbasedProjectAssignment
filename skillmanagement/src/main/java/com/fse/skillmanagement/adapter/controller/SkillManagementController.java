@@ -33,7 +33,7 @@ private SkillManagementService skillManagementService;
 		return "Member created with id " + id;
 	}
 	
-	// curl -X PATCH http://localhost:8091/sm/member -H "Content-Type:application/json" -d "{\"id\":9001, \"name\":\"neuer Schmitz\"}"
+	// curl -X PATCH http://localhost:8091/sm/member -H "Content-Type:application/json" -d "{\"id\":9000, \"name\":\"neuer Schmitz\"}"
 	@PatchMapping(value = "/member", consumes = {"application/json"})
 	public String changeMemberName(@RequestBody MemberDTO member) {
 		if(skillManagementService.changeMemberName(member)) {

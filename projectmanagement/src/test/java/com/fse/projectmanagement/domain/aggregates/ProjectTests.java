@@ -1,4 +1,4 @@
-package com.fse.projectmanagement;
+package com.fse.projectmanagement.domain.aggregates;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,57 +26,13 @@ import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.ProjectService;
 import com.fse.projectmanagement.infrastructure.entities.ProjectEntity;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
-@EnableJdbcRepositories
-public class ProjectmanagementApplicationTests {
-
-	@Autowired
-	private ProjectRepository projectRepository;
+public class ProjectTests {
 	
 	private Integer pId = 9000;
 	private Integer mId = 1000;
 	private Set<Requirement> requirements = new HashSet<>();
 	private Set<Member> members = new HashSet<>();
-
-	@Test
-	void testShouldThrowNPEIfMembersAreNull() {
-		assertThrows(NullPointerException.class,
-	            ()->{
-	            new ProjectEntity(new Project(new ProjectId(pId), "Test Projekt", null, requirements));
-	            });
-	}
-	
-	@Test
-	void testShouldThrowNPEIfRequirementsAreNull() {
-		assertThrows(NullPointerException.class,
-	            ()->{
-	            new ProjectEntity(new Project(new ProjectId(pId), "Test Projekt", members, null));
-	            });
-	}
-	
-	@Test
-	@Transactional
-	void testIfProjectWithSameIDIsUpdated() {
-		Project project1 = new Project(new ProjectId(null), "Test Projekt", members, requirements);
-		Integer projectId1 = projectRepository.save(project1);
-		Project project2 = new Project(new ProjectId(projectId1), "Test Projekt", members, requirements);
-		Integer projectId2 = projectRepository.save(project2);
-		assertEquals(projectId1, projectId2);
-	}
-	
-	@Test
-	@Transactional
-	void testIfMemberIsAlreadyAssignedToProject() {
-		Member member = new Member(new MemberId(mId), "TestMember");
-		Project project = new Project(new ProjectId(null), "Test Projekt", members, requirements);
-		project.addMember(member);
-		Integer projectId1 = projectRepository.save(project);
-		project.addMember(member);
-		Integer projectId2 = projectRepository.save(project);
-		assertNotEquals(-1, projectId1);
-		assertEquals(-1, projectId2);
-	}
 	
 	@Test
 	void testChangingProjectName() {

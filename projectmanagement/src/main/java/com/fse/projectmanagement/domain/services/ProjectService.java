@@ -30,8 +30,8 @@ public class ProjectService {
 
 	public String addMember(Integer id, Member member) {
 		Project project = projectRepository.findById(id);
-		//String response = messagingService.sendAndReceiveViaRabbit(new MemberTemporalyAddedEvent(project, member));
-		String response = messagingService.sendAndReceiveViaKafka(new MemberTemporalyAddedEvent(project, member));
+		String response = messagingService.sendAndReceiveViaRabbit(new MemberTemporalyAddedEvent(project, member));
+		//String response = messagingService.sendAndReceiveViaKafka(new MemberTemporalyAddedEvent(project, member));
 		String result = response;
 		if (response.equalsIgnoreCase("true") || response.equalsIgnoreCase("false")) {
 			boolean areSkillsValid = Boolean.valueOf(response);

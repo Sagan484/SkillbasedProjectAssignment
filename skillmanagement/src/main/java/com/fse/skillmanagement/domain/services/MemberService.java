@@ -44,7 +44,7 @@ public class MemberService {
 		Member member = memberRepository.findById(id);
 		member.changeName(name);
 		memberRepository.save(member);
-		//messagingService.sendViaRabbit(new MemberDataChangedEvent(member));
-		messagingService.sendViaKafka(new MemberDataChangedEvent(member));
+		messagingService.sendViaRabbit(new MemberDataChangedEvent(member));
+		//messagingService.sendViaKafka(new MemberDataChangedEvent(member));
 	}
 }
