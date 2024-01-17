@@ -32,7 +32,7 @@ public class ProjectManagementController {
 	// curl -X POST http://localhost:8090/pm/project -H "Content-Type:application/json" -d "{\"name\":\"Projekt 1\",\"requirements\":[{\"name\":\"Java\"}, {\"name\":\"Oracle\"}, {\"name\":\"Englisch\"}]}"
 	@PostMapping(value = "/project", consumes = {"application/json"})
 	public String createProject(@RequestBody ProjectDTO project) {
-		Integer id = projectManagementService.create(project.getName(), project.getMembers(), project.getRequirements());
+		Integer id = projectManagementService.create(project.getName(), project.getRequirements());
 		return "Project created with id " + id;
 	}
 	

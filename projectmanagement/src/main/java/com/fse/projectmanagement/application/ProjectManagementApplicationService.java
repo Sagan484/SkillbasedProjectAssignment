@@ -1,5 +1,6 @@
 package com.fse.projectmanagement.application;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -33,10 +34,9 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	}
 	
 	@Override
-	public Integer create(String name, Set<MemberDTO> mSet, Set<RequirementDTO> rSet) {
-		Set<Member> members = dtoToDomainMapper.map(mSet);
+	public Integer create(String name, Set<RequirementDTO> rSet) {
 		Set<Requirement> requirements = dtoToDomainMapper.map(rSet);
-        Project p = new Project(new ProjectId(null), name, members, requirements);
+        Project p = new Project(new ProjectId(null), name, requirements);
         return projectRepository.save(p);
 	}
 

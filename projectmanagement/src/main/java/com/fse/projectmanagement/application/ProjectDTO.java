@@ -50,6 +50,6 @@ public class ProjectDTO extends DTO<Project> {
 	
 	@Override
 	public String toString() {
-		return String.format("ProjektID: %s, Name: %s, Members: [%s], Requirements: [%s]", id, name, memberDtos.toString(), requirementDtos.toString());
+		return String.format("ProjektID: %s, Name: %s, Members: %s, Requirements: %s", id, name, memberDtos.toString(), requirementDtos.toString());
 	}
 }
