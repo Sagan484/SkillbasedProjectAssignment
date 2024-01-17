@@ -69,6 +69,6 @@ public class Project {
 	
 	@Override
 	public String toString() {
-		return String.format("ProjektID: %s, Name: %s, Members: %s, Requirements: %s", id, name, members, requirements);
+		return String.format("ProjektID: %s, Name: %s, Members: %s, Requirements: %s", id.getId(), name, members, requirements);
 	}
 }

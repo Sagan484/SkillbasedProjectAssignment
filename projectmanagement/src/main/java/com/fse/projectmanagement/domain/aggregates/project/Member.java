@@ -24,6 +24,6 @@ public class Member {
 	
 	@Override
 	public String toString() {
-		return String.format("member ID: %s, name: %s", id, name);
+		return String.format("member ID: %s, name: %s", id.getId(), name);
 	}
 }
