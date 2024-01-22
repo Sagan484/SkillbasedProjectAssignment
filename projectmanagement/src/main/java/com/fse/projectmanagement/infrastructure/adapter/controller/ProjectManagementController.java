@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fse.projectmanagement.application.ProjectManagementService;
+import com.fse.projectmanagement.application.ProjectManagementApplicationService;
 import com.fse.projectmanagement.infrastructure.dtos.MemberDTO;
 import com.fse.projectmanagement.infrastructure.dtos.ProjectDTO;
 
@@ -23,9 +23,9 @@ import com.fse.projectmanagement.infrastructure.dtos.ProjectDTO;
 @RequestMapping("/pm")
 public class ProjectManagementController {
 	
-	private ProjectManagementService projectManagementService;
+	private ProjectManagementApplicationService projectManagementService;
 	
-	public ProjectManagementController (ProjectManagementService projectManagementService) {
+	public ProjectManagementController (ProjectManagementApplicationService projectManagementService) {
 		this.projectManagementService = projectManagementService;
 	}
 	

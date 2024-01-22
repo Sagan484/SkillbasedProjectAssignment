@@ -17,6 +17,7 @@ import com.fse.membermanagement.infrastructure.mapper.SkillToSkillDTOMapper;
 import com.fse.membermanagement.infrastructure.repositories.JdbcMemberEntityRepository;
 import com.fse.membermanagement.infrastructure.repositories.MemberRepositoryImpl;
 
+
 @Configuration
 public class AppConfig {
 	

@@ -3,9 +3,9 @@ package com.fse.membermanagement.infrastructure.adapter.messaging.publisher;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import com.fse.membermanagement.adapter.messaging.MessagingService;
 import com.fse.membermanagement.domain.events.DomainEvent;
 import com.fse.membermanagement.domain.events.MemberDataChangedEvent;
+import com.fse.membermanagement.infrastructure.adapter.messaging.MessagingService;
 import com.fse.membermanagement.infrastructure.config.PropertiesConfig;
 
 public class MemberMessagingPublisher implements MessagingService {
