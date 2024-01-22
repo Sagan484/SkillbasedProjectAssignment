@@ -47,7 +47,7 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 		Set<MemberDTO> memberDTOs = memberMapper.map(p.getMembers());
 		Set<RequirementDTO> requirementDTOs = requirementMapper.map(p.getRequirements());
 		return new ProjectDTO(id, p.getName(), memberDTOs, requirementDTOs);
-		} catch (IllegalArgumentException e) {
+		} catch (NoSuchElementException e) {
 			return null;
 		}
 	}

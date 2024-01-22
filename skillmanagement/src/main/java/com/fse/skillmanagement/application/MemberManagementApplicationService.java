@@ -12,13 +12,13 @@ import com.fse.skillmanagement.domain.aggregates.member.Skill;
 import com.fse.skillmanagement.domain.repositories.MemberRepository;
 import com.fse.skillmanagement.domain.services.MemberService;
 
-public class SkillManagementApplicationService implements SkillManagementService {
+public class MemberManagementApplicationService implements MemberManagementService {
 
 	private MemberRepository memberRepository;
 	private SkillToSkillDTOMapper skillMapper;
 	private MemberService memberService;
 	
-	public SkillManagementApplicationService(MemberRepository memberRepository, MemberService memberService, SkillToSkillDTOMapper skillMapper) {
+	public MemberManagementApplicationService(MemberRepository memberRepository, MemberService memberService, SkillToSkillDTOMapper skillMapper) {
 		this.memberRepository = memberRepository;
 		this.skillMapper = skillMapper;
 		this.memberService = memberService;
@@ -29,7 +29,6 @@ public class SkillManagementApplicationService implements SkillManagementService
 		Set<Skill> skills = sList.stream()
 				.map(s -> s.toDomain())
 				.collect(Collectors.toSet());
-		// DTO erstellen und übergeben und im repository zu Member?
         Member m = new Member(new MemberId(null), name, skills);
         return memberRepository.save(m);
 	}
@@ -45,7 +44,7 @@ public class SkillManagementApplicationService implements SkillManagementService
 	}
 
 	@Override
-	public List<SkillDTO> read(Integer id) {
+	public List<SkillDTO> readSkillsFromMember(Integer id) {
 		try {
 		Member m = memberRepository.findById(id);
 		return skillMapper.map(m.getSkills());
@@ -55,11 +54,22 @@ public class SkillManagementApplicationService implements SkillManagementService
 	}
 	
 	@Override
-	public List<SkillDTO> readAll() {
+	public List<SkillDTO> readAllSkills() {
 		List<SkillDTO> skills = new ArrayList<>();
 		memberRepository.findAll().stream()
 	            .forEach(m -> skills.addAll(skillMapper.map(m.getSkills())));
 		return skills;
+	}
+	
+	@Override
+	public MemberDTO read(Integer id) {
+		try {
+			Member m = memberRepository.findById(id);
+			Set<SkillDTO> skillDTOs = (Set<SkillDTO>) skillMapper.map(m.getSkills().stream().collect(Collectors.toSet()));
+			return new MemberDTO(m.getMemberId().getId(), m.getName(), skillDTOs);
+		} catch (NoSuchElementException e) {
+			return null;
+		}
 	}
 
 	@Override

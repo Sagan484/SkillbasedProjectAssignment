@@ -8,9 +8,9 @@ import org.springframework.kafka.core.KafkaTemplate;
 import com.fse.skillmanagement.adapter.listener.CheckSkillsEventListener;
 import com.fse.skillmanagement.adapter.messaging.MessagingService;
 import com.fse.skillmanagement.adapter.publisher.MessagingServiceImpl;
+import com.fse.skillmanagement.application.MemberManagementApplicationService;
+import com.fse.skillmanagement.application.MemberManagementService;
 import com.fse.skillmanagement.application.MemberToMemberDTOMapper;
-import com.fse.skillmanagement.application.SkillManagementApplicationService;
-import com.fse.skillmanagement.application.SkillManagementService;
 import com.fse.skillmanagement.application.SkillToSkillDTOMapper;
 import com.fse.skillmanagement.domain.repositories.MemberRepository;
 import com.fse.skillmanagement.domain.services.MemberService;
@@ -21,10 +21,10 @@ import com.fse.skillmanagement.infrastructure.repositories.MemberRepositoryImpl;
 public class AppConfig {
 	
 	@Bean
-	SkillManagementService skillManagementService(MemberRepository memberRepository,
+	MemberManagementService memberManagementService(MemberRepository memberRepository,
 			MemberService memberService,
 			SkillToSkillDTOMapper skillMapper) {
-		return new SkillManagementApplicationService(memberRepository, memberService, skillMapper);
+		return new MemberManagementApplicationService(memberRepository, memberService, skillMapper);
 	}
 
 	@Bean

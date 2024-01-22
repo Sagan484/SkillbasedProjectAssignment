@@ -3,10 +3,11 @@ package com.fse.skillmanagement.application;
 import java.util.List;
 import java.util.Set;
 
-public interface SkillManagementService {
+public interface MemberManagementService {
 	public Integer create(String name, Set<SkillDTO> skillDTOs);
-	public List<SkillDTO> read(Integer id);
-	public List<SkillDTO> readAll();
+	public List<SkillDTO> readSkillsFromMember(Integer id);
+	public List<SkillDTO> readAllSkills();
+	public MemberDTO read(Integer id);
 	public boolean delete(Integer id);
 	
 	public boolean addSkillToMember(Integer id, SkillDTO skillDTO);
