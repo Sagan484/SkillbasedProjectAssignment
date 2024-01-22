@@ -22,11 +22,6 @@ public class ProjectService {
 		project.changeName(name);
 		projectRepository.save(project);
 	}
-	
-	public void deleteProject(Integer id) {
-		Project project = projectRepository.findById(id);
-		projectRepository.delete(project);
-	}
 
 	public String addMember(Integer id, Member member) {
 		Project project = projectRepository.findById(id);

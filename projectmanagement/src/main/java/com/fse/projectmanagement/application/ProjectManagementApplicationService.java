@@ -1,12 +1,10 @@
 package com.fse.projectmanagement.application;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.aggregates.project.ProjectId;
 import com.fse.projectmanagement.domain.aggregates.project.Requirement;
@@ -72,7 +70,8 @@ public class ProjectManagementApplicationService implements ProjectManagementSer
 	@Override
 	public String delete(Integer id) {
 		try {
-			projectService.deleteProject(id);
+			Project project = projectRepository.findById(id);
+			projectRepository.delete(project);
 			return "Project with id " + id + " successfully deleted.";
 		} catch (NoSuchElementException e) {
 			return e.getMessage();

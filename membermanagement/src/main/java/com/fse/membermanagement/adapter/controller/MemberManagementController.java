@@ -80,7 +80,7 @@ private MemberManagementService memberManagementService;
 		return "No member found with ID: " + id;
 	}
 	
-	// curl -X PATCH http://localhost:8091/mm/member/1064/addSkill -H "Content-Type:application/json" -d "{\"name\":\"Java\", \"area\":\"Programmierung\", \"certificates\":[{\"name\":\"Java Zertifikat 1\", \"name\":\"Java Zertifikat 2\"}]}"
+	// curl -X PATCH http://localhost:8091/mm/member/1064/addSkill -H "Content-Type:application/json" -d "{\"name\":\"Java\", \"area\":\"Programmierung\"}"
 	@PatchMapping(value = "/member/{id}/addSkill", consumes = {"application/json"})
 	public String addSkillToMember(@PathVariable Integer id, @RequestBody SkillDTO skill) {
 		if (memberManagementService.addSkillToMember(id, skill)) {
