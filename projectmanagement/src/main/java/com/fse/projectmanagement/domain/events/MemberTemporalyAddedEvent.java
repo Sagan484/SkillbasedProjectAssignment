@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fse.projectmanagement.application.MemberDTO;
 import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
+import com.fse.projectmanagement.infrastructure.dtos.MemberDTO;
 
 public class MemberTemporalyAddedEvent extends DomainEvent {
 

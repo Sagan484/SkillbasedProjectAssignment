@@ -10,6 +10,12 @@ import com.fse.projectmanagement.domain.aggregates.project.ProjectId;
 import com.fse.projectmanagement.domain.aggregates.project.Requirement;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.ProjectService;
+import com.fse.projectmanagement.infrastructure.dtos.MemberDTO;
+import com.fse.projectmanagement.infrastructure.dtos.ProjectDTO;
+import com.fse.projectmanagement.infrastructure.dtos.RequirementDTO;
+import com.fse.projectmanagement.infrastructure.mapper.DTOtoDomainMapper;
+import com.fse.projectmanagement.infrastructure.mapper.MemberToMemberDTOMapper;
+import com.fse.projectmanagement.infrastructure.mapper.RequirementToRequirementDTOMapper;
 
 public class ProjectManagementApplicationService implements ProjectManagementService {
 

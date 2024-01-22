@@ -5,17 +5,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 
-import com.fse.projectmanagement.adapter.listener.ManageMembersEventListener;
-import com.fse.projectmanagement.adapter.messaging.MessagingService;
-import com.fse.projectmanagement.adapter.publisher.MessagingServiceImpl;
-import com.fse.projectmanagement.application.DTOtoDomainMapper;
-import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
 import com.fse.projectmanagement.application.ProjectManagementService;
-import com.fse.projectmanagement.application.RequirementToRequirementDTOMapper;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.MemberService;
 import com.fse.projectmanagement.domain.services.ProjectService;
+import com.fse.projectmanagement.infrastructure.adapter.listener.ManageMembersEventListener;
+import com.fse.projectmanagement.infrastructure.adapter.messaging.MessagingService;
+import com.fse.projectmanagement.infrastructure.adapter.messaging.publisher.MemberMessagingPublisher;
+import com.fse.projectmanagement.infrastructure.mapper.DTOtoDomainMapper;
+import com.fse.projectmanagement.infrastructure.mapper.MemberToMemberDTOMapper;
+import com.fse.projectmanagement.infrastructure.mapper.RequirementToRequirementDTOMapper;
 import com.fse.projectmanagement.infrastructure.repositories.JdbcProjectEntityRepository;
 import com.fse.projectmanagement.infrastructure.repositories.ProjectRepositoryImpl;
 
@@ -66,10 +66,10 @@ public class AppConfig {
 	}
 	
 	@Bean
-	MessagingService messagingService(RabbitTemplate rabbitTemplate,
+	MemberMessagingPublisher messagingService(RabbitTemplate rabbitTemplate,
 			ReplyingKafkaTemplate<String, String, String> replyingKafkaTemplate,
 			PropertiesConfig config) {
-		return new MessagingServiceImpl(rabbitTemplate, replyingKafkaTemplate, config);
+		return new MemberMessagingPublisher(rabbitTemplate, replyingKafkaTemplate, config);
 	}
 	
 	@Bean

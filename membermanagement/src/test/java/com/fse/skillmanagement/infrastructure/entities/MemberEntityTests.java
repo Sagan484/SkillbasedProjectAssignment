@@ -5,8 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.fse.skillmanagement.domain.aggregates.member.Member;
-import com.fse.skillmanagement.domain.aggregates.member.MemberId;
+import com.fse.membermanagement.domain.aggregates.member.Member;
+import com.fse.membermanagement.domain.aggregates.member.MemberId;
+import com.fse.membermanagement.infrastructure.entities.MemberEntity;
 
 @SpringBootTest
 class MemberEntityTests {

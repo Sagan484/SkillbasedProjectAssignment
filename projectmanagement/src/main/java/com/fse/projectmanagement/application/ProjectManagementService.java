@@ -3,6 +3,10 @@ package com.fse.projectmanagement.application;
 import java.util.List;
 import java.util.Set;
 
+import com.fse.projectmanagement.infrastructure.dtos.MemberDTO;
+import com.fse.projectmanagement.infrastructure.dtos.ProjectDTO;
+import com.fse.projectmanagement.infrastructure.dtos.RequirementDTO;
+
 public interface ProjectManagementService {
 	public Integer create(String name, Set<RequirementDTO> requirementDtos);
 	public ProjectDTO read(Integer id);

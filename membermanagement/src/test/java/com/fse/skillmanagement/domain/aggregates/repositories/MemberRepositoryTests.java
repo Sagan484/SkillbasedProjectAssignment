@@ -13,10 +13,10 @@ import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fse.skillmanagement.domain.aggregates.member.Member;
-import com.fse.skillmanagement.domain.aggregates.member.MemberId;
-import com.fse.skillmanagement.domain.aggregates.member.Skill;
-import com.fse.skillmanagement.domain.repositories.MemberRepository;
+import com.fse.membermanagement.domain.aggregates.member.Member;
+import com.fse.membermanagement.domain.aggregates.member.MemberId;
+import com.fse.membermanagement.domain.aggregates.member.Skill;
+import com.fse.membermanagement.domain.repositories.MemberRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest

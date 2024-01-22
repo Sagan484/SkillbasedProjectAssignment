@@ -14,9 +14,9 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.fse.skillmanagement.domain.aggregates.member.Member;
-import com.fse.skillmanagement.domain.aggregates.member.MemberId;
-import com.fse.skillmanagement.domain.aggregates.member.Skill;
+import com.fse.membermanagement.domain.aggregates.member.Member;
+import com.fse.membermanagement.domain.aggregates.member.MemberId;
+import com.fse.membermanagement.domain.aggregates.member.Skill;
 
 @SpringBootTest
 class MemberTests {

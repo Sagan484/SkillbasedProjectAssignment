@@ -34,6 +34,8 @@ public class MemberService {
 		if (project != null) {
 			project.addMember(newMember);
 			projectRepository.save(project);
+		} else {
+			throw new NoSuchElementException();
 		}
 	}
 }

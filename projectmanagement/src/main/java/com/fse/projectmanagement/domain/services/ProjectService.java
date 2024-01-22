@@ -1,11 +1,11 @@
 package com.fse.projectmanagement.domain.services;
 
-import com.fse.projectmanagement.adapter.messaging.MessagingService;
 import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.MemberId;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
 import com.fse.projectmanagement.domain.events.MemberTemporalyAddedEvent;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
+import com.fse.projectmanagement.infrastructure.adapter.messaging.MessagingService;
 
 public class ProjectService {
 	

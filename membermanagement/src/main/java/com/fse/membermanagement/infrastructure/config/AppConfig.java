@@ -5,15 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import com.fse.membermanagement.adapter.listener.CheckSkillsEventListener;
-import com.fse.membermanagement.adapter.messaging.MessagingService;
-import com.fse.membermanagement.adapter.publisher.MessagingServiceImpl;
 import com.fse.membermanagement.application.MemberManagementApplicationService;
-import com.fse.membermanagement.application.MemberManagementService;
-import com.fse.membermanagement.application.MemberToMemberDTOMapper;
-import com.fse.membermanagement.application.SkillToSkillDTOMapper;
+import com.fse.membermanagement.application.MemberManagementApplicationServiceImpl;
 import com.fse.membermanagement.domain.repositories.MemberRepository;
 import com.fse.membermanagement.domain.services.MemberService;
+import com.fse.membermanagement.infrastructure.adapter.listener.CheckSkillsEventListener;
+import com.fse.membermanagement.infrastructure.adapter.messaging.MessagingService;
+import com.fse.membermanagement.infrastructure.adapter.messaging.publisher.MemberMessagingPublisher;
+import com.fse.membermanagement.infrastructure.mapper.MemberToMemberDTOMapper;
+import com.fse.membermanagement.infrastructure.mapper.SkillToSkillDTOMapper;
 import com.fse.membermanagement.infrastructure.repositories.JdbcMemberEntityRepository;
 import com.fse.membermanagement.infrastructure.repositories.MemberRepositoryImpl;
 
@@ -21,10 +21,10 @@ import com.fse.membermanagement.infrastructure.repositories.MemberRepositoryImpl
 public class AppConfig {
 	
 	@Bean
-	MemberManagementService memberManagementService(MemberRepository memberRepository,
+	MemberManagementApplicationService memberManagementApplicationService(MemberRepository memberRepository,
 			MemberService memberService,
 			SkillToSkillDTOMapper skillMapper) {
-		return new MemberManagementApplicationService(memberRepository, memberService, skillMapper);
+		return new MemberManagementApplicationServiceImpl(memberRepository, memberService, skillMapper);
 	}
 
 	@Bean
@@ -53,10 +53,10 @@ public class AppConfig {
 	}
 	
 	@Bean
-	MessagingService messagingService(RabbitTemplate rabbitTemplate,
+	MemberMessagingPublisher messagingService(RabbitTemplate rabbitTemplate,
 			KafkaTemplate<String, String> kafkaTemplate,
 			PropertiesConfig config) {
-		return new MessagingServiceImpl(rabbitTemplate, kafkaTemplate, config);
+		return new MemberMessagingPublisher(rabbitTemplate, kafkaTemplate, config);
 	}
 	
 	@Bean PropertiesConfig config() {

@@ -2,11 +2,11 @@ package com.fse.membermanagement.domain.services;
 
 import java.util.List;
 
-import com.fse.membermanagement.adapter.messaging.MessagingService;
 import com.fse.membermanagement.domain.aggregates.member.Member;
 import com.fse.membermanagement.domain.aggregates.member.Skill;
 import com.fse.membermanagement.domain.events.MemberDataChangedEvent;
 import com.fse.membermanagement.domain.repositories.MemberRepository;
+import com.fse.membermanagement.infrastructure.adapter.messaging.MessagingService;
 
 public class MemberService {
 	
