@@ -1,4 +1,4 @@
-package com.fse.membermanagement.infrastructure.adapter.listener;
+package com.fse.membermanagement.infrastructure.adapter.messaging.listener;
 
 import java.util.List;
 import java.util.NoSuchElementException;

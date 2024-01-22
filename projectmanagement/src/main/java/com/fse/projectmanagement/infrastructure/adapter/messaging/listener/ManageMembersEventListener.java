@@ -1,4 +1,4 @@
-package com.fse.projectmanagement.infrastructure.adapter.listener;
+package com.fse.projectmanagement.infrastructure.adapter.messaging.listener;
 
 import java.util.NoSuchElementException;
 

@@ -5,13 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 
-import com.fse.projectmanagement.application.ProjectManagementApplicationServiceImpl;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
+import com.fse.projectmanagement.application.ProjectManagementApplicationServiceImpl;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.MemberService;
 import com.fse.projectmanagement.domain.services.ProjectService;
-import com.fse.projectmanagement.infrastructure.adapter.listener.ManageMembersEventListener;
 import com.fse.projectmanagement.infrastructure.adapter.messaging.MessagingService;
+import com.fse.projectmanagement.infrastructure.adapter.messaging.listener.ManageMembersEventListener;
 import com.fse.projectmanagement.infrastructure.adapter.messaging.publisher.MemberMessagingPublisher;
 import com.fse.projectmanagement.infrastructure.mapper.DTOtoDomainMapper;
 import com.fse.projectmanagement.infrastructure.mapper.MemberToMemberDTOMapper;

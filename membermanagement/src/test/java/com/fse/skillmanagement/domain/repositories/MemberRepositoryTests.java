@@ -1,4 +1,4 @@
-package com.fse.skillmanagement.domain.aggregates.repositories;
+package com.fse.skillmanagement.domain.repositories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
