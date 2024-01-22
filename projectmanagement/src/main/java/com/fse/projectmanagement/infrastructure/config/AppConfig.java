@@ -13,13 +13,10 @@ import com.fse.projectmanagement.application.MemberToMemberDTOMapper;
 import com.fse.projectmanagement.application.ProjectManagementApplicationService;
 import com.fse.projectmanagement.application.ProjectManagementService;
 import com.fse.projectmanagement.application.RequirementToRequirementDTOMapper;
-import com.fse.projectmanagement.domain.repositories.MemberRepository;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.domain.services.MemberService;
 import com.fse.projectmanagement.domain.services.ProjectService;
-import com.fse.projectmanagement.infrastructure.repositories.JdbcMemberEntityRepository;
 import com.fse.projectmanagement.infrastructure.repositories.JdbcProjectEntityRepository;
-import com.fse.projectmanagement.infrastructure.repositories.MemberRepositoryImpl;
 import com.fse.projectmanagement.infrastructure.repositories.ProjectRepositoryImpl;
 
 @Configuration
@@ -49,13 +46,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	MemberRepository memberRepository(JdbcMemberEntityRepository jdbcMemberEntityRepository) {
-		return new MemberRepositoryImpl(jdbcMemberEntityRepository);
-	}
-	
-	@Bean
-	MemberService memberService(MemberRepository memberRepository) {
-		return new MemberService(memberRepository);
+	MemberService memberService(ProjectRepository projectRepository) {
+		return new MemberService(projectRepository);
 	}
 	
 	@Bean
