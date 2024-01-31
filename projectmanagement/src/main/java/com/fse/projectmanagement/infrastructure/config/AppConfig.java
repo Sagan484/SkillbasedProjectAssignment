@@ -73,8 +73,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	ManageMembersEventListener manageMembersEventListener(MemberService memberService, PropertiesConfig config) {
-		return new ManageMembersEventListener(memberService, config);
+	ManageMembersEventListener manageMembersEventListener(MemberService memberService) {
+		return new ManageMembersEventListener(memberService);
 	}
 	
 	@Bean PropertiesConfig config() {

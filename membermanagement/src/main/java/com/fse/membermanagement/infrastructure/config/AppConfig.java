@@ -49,8 +49,8 @@ public class AppConfig {
 	}
 	
 	@Bean
-	CheckSkillsEventListener removeMemberEventListener(MemberService memberService, PropertiesConfig config) {
-		return new CheckSkillsEventListener(memberService, config);
+	CheckSkillsEventListener removeMemberEventListener(MemberService memberService) {
+		return new CheckSkillsEventListener(memberService);
 	}
 	
 	@Bean

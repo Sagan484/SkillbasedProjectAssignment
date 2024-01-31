@@ -9,24 +9,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fse.projectmanagement.domain.services.MemberService;
-import com.fse.projectmanagement.infrastructure.config.PropertiesConfig;
 import com.fse.projectmanagement.infrastructure.dtos.MemberDTO;
 
 
 public class ManageMembersEventListener {
 
 	private MemberService memberService;
-	private PropertiesConfig config;
-	
-	//TODO fix me
-	private final String QUEUE_MANAGE_MEMBERS = "manageMembers"; //config.getQueueManageMembersName();
 
-	public ManageMembersEventListener (MemberService memberService, PropertiesConfig config) {
+	public ManageMembersEventListener (MemberService memberService) {
 		this.memberService = memberService;
-		this.config = config;
 	}
 	
-	@RabbitListener(queues = QUEUE_MANAGE_MEMBERS)
+	@RabbitListener(queues = "${rabbitmq.queue.manage.members.name}")
 	public void listenRabbit(String payload) {
 		System.out.println("DEBUG Payload: " + payload);
 		try {
