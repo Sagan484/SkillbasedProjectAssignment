@@ -50,7 +50,7 @@ public class MemberManagementApplicationServiceImpl implements MemberManagementA
 	@Override
 	public List<SkillDTO> readSkillsFromMember(Integer id) {
 		try {
-		Member m = memberRepository.findById(id);
+		Member m = memberRepository.findById(new MemberId(id));
 		return skillMapper.map(m.getSkills());
 		} catch (NoSuchElementException e) {
 			return null;
@@ -68,7 +68,7 @@ public class MemberManagementApplicationServiceImpl implements MemberManagementA
 	@Override
 	public MemberDTO read(Integer id) {
 		try {
-			Member m = memberRepository.findById(id);
+			Member m = memberRepository.findById(new MemberId(id));
 			List<SkillDTO> skillList = skillMapper.map(m.getSkills());
 			Set<SkillDTO> skills = (HashSet<SkillDTO>)skillList.stream().collect(Collectors.toSet());
 			return new MemberDTO(m.getMemberId().getId(), m.getName(), skills);
@@ -80,7 +80,7 @@ public class MemberManagementApplicationServiceImpl implements MemberManagementA
 	@Override
 	public boolean delete(Integer id) {
 		try {
-			Member m = memberRepository.findById(id);
+			Member m = memberRepository.findById(new MemberId(id));
 			memberRepository.delete(m);
 			return true;
 		} catch (NoSuchElementException e) {

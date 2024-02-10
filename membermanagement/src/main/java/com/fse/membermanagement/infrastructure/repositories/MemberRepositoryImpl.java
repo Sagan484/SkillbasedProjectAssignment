@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.fse.membermanagement.domain.aggregates.member.Member;
+import com.fse.membermanagement.domain.aggregates.member.MemberId;
 import com.fse.membermanagement.domain.repositories.MemberRepository;
 import com.fse.membermanagement.infrastructure.entities.MemberEntity;
 
@@ -17,8 +18,8 @@ public class MemberRepositoryImpl implements MemberRepository {
 	}
 	
 	@Override
-	public Member findById(Integer memberId) {
-		MemberEntity memberEntity = jdbcMemberEntityRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("No member found with id " + memberId));
+	public Member findById(MemberId memberId) {
+		MemberEntity memberEntity = jdbcMemberEntityRepository.findById(memberId.getId()).orElseThrow(() -> new NoSuchElementException("No member found with id " + memberId));
 		return memberEntity.toDomain();
 	}
 	

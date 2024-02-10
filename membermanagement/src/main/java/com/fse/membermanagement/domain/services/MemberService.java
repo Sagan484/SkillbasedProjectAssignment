@@ -3,6 +3,7 @@ package com.fse.membermanagement.domain.services;
 import java.util.List;
 
 import com.fse.membermanagement.domain.aggregates.member.Member;
+import com.fse.membermanagement.domain.aggregates.member.MemberId;
 import com.fse.membermanagement.domain.aggregates.member.Skill;
 import com.fse.membermanagement.domain.events.MemberDataChangedEvent;
 import com.fse.membermanagement.domain.repositories.MemberRepository;
@@ -19,32 +20,32 @@ public class MemberService {
 	}
 	
 	public void addSkill(Integer id, Skill skill) {
-		Member member = memberRepository.findById(id);
+		Member member = memberRepository.findById(new MemberId(id));
 		member.addSkill(skill);
 		memberRepository.save(member);
 	}
 	
 	public void removeSkill(Integer id, Skill skill) {
-		Member member = memberRepository.findById(id);
+		Member member = memberRepository.findById(new MemberId(id));
 		member.removeSkill(skill);
 		memberRepository.save(member);
 	}
 	
 	public boolean checkSkills(Integer id, List<String> requirements) {
-		Member member = memberRepository.findById(id);
+		Member member = memberRepository.findById(new MemberId(id));
 		return member.areSkillsValid(requirements);
 	}
 
 	public void remove(Integer id) {
-		Member member = memberRepository.findById(id);
+		Member member = memberRepository.findById(new MemberId(id));
 		memberRepository.delete(member);
 	}
 
 	public void changeName(Integer id, String name) {
-		Member member = memberRepository.findById(id);
+		Member member = memberRepository.findById(new MemberId(id));
 		member.changeName(name);
 		memberRepository.save(member);
-		messagingService.sendViaRabbit(new MemberDataChangedEvent(member));
-		// messagingService.sendViaKafka(new MemberDataChangedEvent(member));
+		//messagingService.sendViaRabbit(new MemberDataChangedEvent(member));
+		messagingService.sendViaKafka(new MemberDataChangedEvent(member));
 	}
 }

@@ -47,7 +47,7 @@ public class ProjectManagementApplicationServiceImpl implements ProjectManagemen
 	@Override
 	public ProjectDTO read(Integer id) {
 		try {
-		Project p = projectRepository.findById(id);
+		Project p = projectRepository.findById(new ProjectId(id));
 		Set<MemberDTO> memberDTOs = memberMapper.map(p.getMembers());
 		Set<RequirementDTO> requirementDTOs = requirementMapper.map(p.getRequirements());
 		return new ProjectDTO(id, p.getName(), memberDTOs, requirementDTOs);
@@ -76,7 +76,7 @@ public class ProjectManagementApplicationServiceImpl implements ProjectManagemen
 	@Override
 	public String delete(Integer id) {
 		try {
-			Project project = projectRepository.findById(id);
+			Project project = projectRepository.findById(new ProjectId(id));
 			projectRepository.delete(project);
 			return "Project with id " + id + " successfully deleted.";
 		} catch (NoSuchElementException e) {

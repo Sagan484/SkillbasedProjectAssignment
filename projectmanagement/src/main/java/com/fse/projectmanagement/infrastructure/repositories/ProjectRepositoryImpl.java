@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import org.springframework.data.relational.core.conversion.DbActionExecutionException;
 
 import com.fse.projectmanagement.domain.aggregates.project.Project;
+import com.fse.projectmanagement.domain.aggregates.project.ProjectId;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.infrastructure.entities.ProjectEntity;
 
@@ -19,8 +20,8 @@ public class ProjectRepositoryImpl implements ProjectRepository {
 	}
 	
 	@Override
-	public Project findById(Integer projectId) {
-		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId).orElseThrow(() -> new NoSuchElementException("No project found with id " + projectId));
+	public Project findById(ProjectId projectId) {
+		ProjectEntity projectEntity = jdbcProjectEntityRepository.findById(projectId.getId()).orElseThrow(() -> new NoSuchElementException("No project found with id " + projectId));
 		return projectEntity.toDomain();
 	}
 	

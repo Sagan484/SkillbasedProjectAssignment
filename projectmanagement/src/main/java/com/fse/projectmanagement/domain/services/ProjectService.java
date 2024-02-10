@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import com.fse.projectmanagement.domain.aggregates.project.Member;
 import com.fse.projectmanagement.domain.aggregates.project.MemberId;
 import com.fse.projectmanagement.domain.aggregates.project.Project;
+import com.fse.projectmanagement.domain.aggregates.project.ProjectId;
 import com.fse.projectmanagement.domain.events.MemberTemporalyAddedEvent;
 import com.fse.projectmanagement.domain.repositories.ProjectRepository;
 import com.fse.projectmanagement.infrastructure.adapter.messaging.MessagingService;
@@ -20,14 +21,14 @@ public class ProjectService {
 	}
 	
 	public void changeProjectName(Integer id, String name) {
-		Project project = projectRepository.findById(id);
+		Project project = projectRepository.findById(new ProjectId(id));
 		project.changeName(name);
 		projectRepository.save(project);
 	}
 
 	public String addMember(Integer id, Member member) {
 		try {
-			Project project = projectRepository.findById(id);
+			Project project = projectRepository.findById(new ProjectId(id));
 			String response = messagingService.sendAndReceiveViaRabbit(new MemberTemporalyAddedEvent(project, member));
 			// String response = messagingService.sendAndReceiveViaKafka(new MemberTemporalyAddedEvent(project, member));
 			String result = response;
@@ -51,7 +52,7 @@ public class ProjectService {
 	}
 	
 	public void removeMember(Integer id, MemberId memberId) {
-		Project project = projectRepository.findById(id);
+		Project project = projectRepository.findById(new ProjectId(id));
 		project.removeMember(memberId);
 		projectRepository.save(project);
 	}
